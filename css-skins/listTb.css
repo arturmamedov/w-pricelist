@@ -1,0 +1,139 @@
+/* * listTb * */
+/* * by withArtur * */
+/* * inspired by WebMT * */
+/* 2016 NOV withArtur@gmail.com */
+.listTb {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    border: 1px solid #ffffff;
+
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.listTb caption {
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.listTb table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.listTb tr:last-child td:last-child {
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.listTb table tr:first-child td:first-child {
+    -moz-border-radius-topleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.listTb table tr:first-child td:last-child {
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.listTb tr:last-child td:first-child {
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.listTb tr:hover td {
+
+}
+
+.listTb tr:nth-child(odd) {
+    background-color: #eaeaea;
+}
+
+.listTb tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.listTb th, .listTb th small {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.listTb td {
+    vertical-align: middle;
+    border: 1px solid #ffffff;
+    border-width: 0px 1px 1px 0px;
+    text-align: right !important;
+    padding: 7px !important;
+    font-weight: normal;
+    color: #000000;
+    font-size: 15px;
+}
+
+.listTb td span {
+    color: #000000;
+}
+
+.listTb tr > td:first-child, .listTb tr > td:first-child span {
+    text-align: left !important;
+    color: #848484 !important;
+}
+
+.listTb tr:last-child td {
+    border-width: 0px 1px 0px 0px;
+}
+
+.listTb tr td:last-child {
+    border-width: 0px 0px 1px 0px;
+}
+
+.listTb tr:last-child td:last-child {
+    border-width: 0px 0px 0px 0px;
+}
+
+.listTb thead tr:first-child td, .listTb thead tr:first-child th {
+    background: -o-linear-gradient(bottom, #009DE0 5%, #009DE0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #009DE0), color-stop(1, #009DE0));
+    background: -moz-linear-gradient(center top, #009DE0 5%, #009DE0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#009DE0", endColorstr="#009DE0");
+    background: -o-linear-gradient(top, #009DE0, 0 cadbe);
+
+    background-color: #009DE0;
+    border: 0px solid #ffffff;
+    text-align: center;
+    border-width: 0px 0px 1px 1px;
+    font-size: 14px;
+    font-family: Arial;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+.listTb tr:first-child td:first-child {
+    border-width: 0px 0px 1px 0px;
+}
+
+.listTb tr:first-child td:last-child {
+    border-width: 0px 0px 1px 1px;
+}
