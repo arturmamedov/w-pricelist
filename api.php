@@ -112,6 +112,10 @@ class MyApi
             $headers[] = "X-Lang: {$options['lang']}";
         }
 
+        // we wont JSON
+        $headers[] = "Accept: application/json, text/javascript";
+        $headers[] = "X-Requested-With: XMLHttpRequest";
+
         // Curl settings
         //curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
         //curl_setopt($ci, CURLOPT_USERPWD, $this->auth);

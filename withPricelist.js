@@ -23,17 +23,18 @@ $(document).ready(function () {
         $.ajax({
             url: '/js/withPricelist/requests.php',
             method: 'GET',
-            //dataType: 'json',
+            dataType: 'json',
             data: {id: pricelist_id, lang: with_lang},
             success: function (json) {
-                if (json.length) {
-                    pricelist.html(json);
+                // // json = $.parseJSON(json);// return right response and not deal with itman! // //
+                if (json.success) {
+                    pricelist.html(json.html);
                 } else {
-                    pricelist.html('<span class="help-block alert alert-danger">Errore durante la generazione Pricelist :(</span>');
+                    pricelist.html('<span class="help-block alert alert-danger">' + json.message + '</span>');
                 }
             },
             error: function () {
-                pricelist.html('<span class="help-block alert alert-danger">Errore durante la generazione Pricelist :(</span>');
+                pricelist.html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
             }
         });
     });
