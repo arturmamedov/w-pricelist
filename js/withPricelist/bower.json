@@ -1,0 +1,32 @@
+{
+  "name": "pricelist-api-with-bower",
+  "version": "1.0.0",
+  "authors": [
+    "Artur Mamedov <arturmamedov1993@gmail.com>"
+  ],
+  "description": "Assets for price list",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "withArtur",
+    "arturmamedov"
+  ],
+  "license": "MIT",
+  "homepage": "www.obiv.it",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "latest",
+    "bootstrap": "latest",
+    "bootstrap-datepicker": "latest",
+    "jquery-number": "latest"
+  }
+}
