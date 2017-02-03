@@ -1,10 +1,19 @@
 /**
  * PriceList view page scripts
  */
-define(['jquery', 'number', 'datepicker'], function ($, number, datepicker) {
+define([
+    'jquery',
+    'number',
+    'datepicker',
+    'handlebars',
+    'bootstrap',
+
+    'text!templates/master.layout.html'
+], function ($, number, datepicker, handlebars, bootstrap, master_layout) {
     var withPricelist = {
-        debug: false,
+        debug: true,
         lang: 'it',
+        pricelist: {},
 
         clog: function (text) {
             if (withPricelist.debug) {
@@ -13,9 +22,12 @@ define(['jquery', 'number', 'datepicker'], function ($, number, datepicker) {
         },
 
         getPricelist: function (pricelist, withData) {
+            withPricelist.pricelist = pricelist;
+
+            // add loader
             pricelist.find(".btnSearch").prop('disabled', true);
             pricelist.find("tbody").addClass('table_loader_center').hide('slow', function () {
-                $(this).html('<tr><td colspan="' + pricelist.find('thead  th').length + '"><img src="' + withBaseUrl + 'img/loader.svg" class="loader_table" /></td></tr>').show();
+                $(this).html('<tr><td colspan="' + pricelist.find('thead  th').length + '"><img src="' + requirejs.toUrl('') + 'img/loader.svg" class="loader_table" /></td></tr>').show();
             });
 
             $.ajax({
@@ -24,14 +36,19 @@ define(['jquery', 'number', 'datepicker'], function ($, number, datepicker) {
                 dataType: 'json',
                 data: withData,
                 success: function (json) {
-                    // // json = $.parseJSON(json);// return right response and not deal with itman! // //
                     if (json.success) {
+                        // remove loader
                         pricelist.find(".btnSearch").prop('disabled', false);
-                        pricelist.find("tbody").removeClass('table_loader_center')
+                        pricelist.find("tbody").removeClass('table_loader_center');
+
                         if (pricelist.find('table').length) {
+                            // refresh table content
                             pricelist.find('table').html(json.html.table);
                         } else {
-                            pricelist.html(json.html.table + json.html.datepicker + json.html.description);
+                            //pricelist.html(json.html.table + json.html.datepicker + json.html.description);
+                            // init Template
+                            var html_tpl = handlebars.compile(master_layout);
+                            pricelist.html(html_tpl(json));
                         }
                         withPricelist.clog('1 - Pricelist generated');
 
@@ -47,6 +64,9 @@ define(['jquery', 'number', 'datepicker'], function ($, number, datepicker) {
                             withPricelist.datePicker(pricelist);
                         }
                     } else {
+                        // remove loader
+                        pricelist.find(".btnSearch").prop('disabled', false);
+
                         if (pricelist.find('table').length) {
                             pricelist.find('table').html('<span class="help-block alert alert-danger">' + json.message + '</span>');
                         } else {
@@ -64,38 +84,64 @@ define(['jquery', 'number', 'datepicker'], function ($, number, datepicker) {
          * Calculate the totals of pricelist for booking
          */
         pricelistTotals: function (id, num) {
-            // get all priods total
-            var period_total = parseFloat($(".pt-total-all-periods-" + id).data('amount')),
-                grand_total = 0;
+            if (id > 0 && num > 0) {
+                // get all priods total
+                var period_total = parseFloat($(".pt-total-all-periods-" + id).attr('data-amount')),
+                    service_name = $(".pt-total-all-periods-" + id).attr('data-service-name'),
+                    grand_total = 0;
 
-            // write the addition of all periods total per num of services
-            var apt = num * period_total, services_periods_total = apt || 0;
+                withPricelist.clog('3.3 - Aggiunto: ' + id + '/' + num + ' name: ' + service_name + ' price: ' + period_total);
 
-            $(".pt-grand-total-all-periods-" + id).number(services_periods_total, 2, ',', ' ');
+                // write the addition of all periods total per num of services
+                var apt = num * period_total, services_periods_total = apt || 0;
 
-            // sum all totals of periods and services and write the grand total sum
-            $(".pt-grand-total-all-periods").each(function () {
-                var ap_totals = parseFloat($(this).text().replace(',', '.')); // todo: intarnationalization
-                grand_total = grand_total + ap_totals;
-            });
+                // addToCart()
+                $(".pt-grand-total-all-periods-" + id).number(services_periods_total, 2, ',', ' ').attr('data-amount', services_periods_total);
+                $(".pt-grand-total-all-periods-" + id).number(services_periods_total, 2, ',', ' ');
+                $(".withCartContent > ul > li.nothingMessage", withPricelist.pricelist).hide();
+                $(".withCartContent > ul", withPricelist.pricelist).append('<li class="list-group-item cart-service-' + id + '">' + service_name + ' &nbsp; € ' + period_total + '</li>');
 
-            // grand total sum
-            $(".pt-grand-total").number(grand_total, 2, ',', ' ');
+                // removeFromCart()
+                // $(".withCartContent > ul > li.nothingMessage", withPricelist.pricelist).hide();
+                // $(".withCartContent > ul > li.cart-service-"+id, withPricelist.pricelist).remove();
+
+                // sum all totals of periods and services and write the grand total sum
+                $(".pt-grand-total-all-periods").each(function () {
+                    var ap_totals = parseFloat($(this).attr('data-amount')); // @todo: intarnationalization
+                    if (ap_totals > 0) {
+                        grand_total = grand_total + ap_totals;
+                        withPricelist.clog('3.4 - Calcolo: ' + ap_totals + ' +');
+                    }
+                });
+
+                // grand total sum
+                $(".pt-grand-total").number(grand_total, 2, ',', ' ');
+                withPricelist.clog('3.5 - Totale: ' + grand_total);
+            }
         },
 
         initPricelistTotals: function () {
-            /*
-             * Fire the calculation on change of num input
-             */
-            $(".withPricelist").on('change', '.pt-num-cell input.num', function () {
-                // get num of service
-                // get id of service
-                var n = parseInt($(this).val()),
-                    num = n || 0,
-                    id = parseInt($(this).data('id'));
+            if (withPricelist.pricelist.hasClass("cart_enabled")) {
+                // cart events yet enabled
+                withPricelist.clog('3.2 - Cart yet here');
+            } else {
+                withPricelist.pricelist.addClass('cart_enabled');
+                withPricelist.clog('3.1 - Cart events enabled');
 
-                withPricelist.pricelistTotals(id, num);
-            });
+                /*
+                 * Fire the calculation on change of num input
+                 */
+                $(".withPricelist").on('change', '.pt-num-cell input.num', function () {
+                    // get num of service
+                    // get id of service
+                    var n = parseInt($(this).val()),
+                        num = n || 0,
+                        id = parseInt($(this).data('id'));
+
+                    withPricelist.pricelistTotals(id, num);
+                });
+            }
+
             // if isset yet something in input num get the total immediately
             $(".pt-num-cell input.num").each(function () {
                 // get num of service

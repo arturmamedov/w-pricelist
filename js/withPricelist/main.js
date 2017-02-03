@@ -1,8 +1,11 @@
 requirejs.config({
     paths: {
+        bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
         jquery: 'bower_components/jquery/dist/jquery.min',
         number: 'bower_components/jquery-number/jquery.number.min',
-        datepicker: 'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min'
+        datepicker: 'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min',
+        handlebars: 'bower_components/handlebars/handlebars.amd',
+        text: 'bower_components/text/text',
     }
 });
 var withBaseUrl = requirejs.toUrl(''),
@@ -32,9 +35,10 @@ requirejs(['withPricelist'],
 
         // all the pricelist on page
         $pricelists = $('.withPricelist');
+        $pricelists.html('<img src="' + withBaseUrl + 'img/loader.svg" class="loader" />');
 
         $pricelists.each(function () {
-            $pricelists.html('<img src="' + withBaseUrl + 'img/loader.svg" class="loader" />')
+
 
             var $elem = $(this),
                 withData = {},
