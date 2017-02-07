@@ -10,3 +10,7 @@
 .table_loader_center {
     text-align: center;
 }
+
+.affix-bottom {
+    position: absolute;
+}

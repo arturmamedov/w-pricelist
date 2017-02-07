@@ -1,0 +1,13 @@
+<ul class="list-group">
+
+    {{#each cartItems}}
+    <li class="list-group-item cart-service-{{this.id}}">
+        <div class="row">
+            <div class="col-sm-8">{{this.service_name}}</div>
+            <div class="col-sm-4">€ {{this.readable_period_total}}</div>
+        </div>
+    </li>
+    {{else}}
+    <li class="list-group-item text-danger nothingMessage">Aggiungi servizi e accomadazioni dalla tabella</li>
+    {{/each}}
+</ul>

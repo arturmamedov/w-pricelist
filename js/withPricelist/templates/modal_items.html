@@ -1,0 +1,24 @@
+<ul class="list-group">
+    {{#each cartItems}}
+    <li class="list-group-item cart-service-{{this.id}}">
+        <div class="row">
+            <div class="col-sm-8">{{this.service_name}}</div>
+            <div class="col-sm-4">€ {{this.readable_period_total}}</div>
+
+            <input type="hidden" name="services[{{ this.id }}-{{ this.num }}]['id']" value="{{ this.id }}"/>
+            <input type="hidden" name="services[{{ this.id }}-{{ this.num }}]['period_total']" value="{{ this.readable_period_total }}"/>
+            <input type="hidden" name="services[{{ this.id }}-{{ this.num }}]['service_name']" value="{{this.service_name}}"/>
+        </div>
+    </li>
+    {{else}}
+    <li class="list-group-item text-danger nothingMessage">Aggiungi servizi e accomadazioni dalla tabella</li>
+    {{/each}}
+    <li class="list-group-item disabled">
+        <div class="row">
+            <div class="col-sm-8">Totale:</div>
+            <div class="col-sm-4">€ {{ readable_grand_total }}</div>
+
+            <input type="hidden" name="grand_total" value="{{ grand_total }}"/>
+        </div>
+    </li>
+</ul>
