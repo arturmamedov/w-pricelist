@@ -132,7 +132,7 @@ class MyApi
             case 'POST':
                 curl_setopt($ci, CURLOPT_POST, true);
                 if ( ! empty($postfields)) {
-                    curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
+                    curl_setopt($ci, CURLOPT_POSTFIELDS, http_build_query($postfields));
                 }
                 break;
             //case 'DELETE':
