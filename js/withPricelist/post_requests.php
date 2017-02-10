@@ -20,8 +20,9 @@ if (isset($_POST['submit'])) {
     $endpoint = "pricelist/pricelist/table/submit/{$id}";
 }
 
+require_once 'config.php';
 require_once 'api.php';
-$my_api = new MyApi('Bearer', '***REMOVED***');
+$my_api = new MyApi('Bearer', $config['access_token']);
 
 $response = $my_api->http($endpoint, $method, $_POST, $params);
 

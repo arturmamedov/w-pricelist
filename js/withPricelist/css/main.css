@@ -14,3 +14,22 @@
 .affix-bottom {
     position: absolute;
 }
+
+.cart-service {
+    position: relative;
+}
+
+.cart-service .remove {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin: 0px;
+}
+
+.add-service {
+    cursor: pointer;
+}

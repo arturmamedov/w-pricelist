@@ -1,10 +1,11 @@
 <ul class="list-group">
 
     {{#each cartItems}}
-    <li class="list-group-item cart-service-{{this.id}}">
+    <li class="list-group-item cart-service cart-service-{{this.id}}">
         <div class="row">
             <div class="col-sm-8">{{this.service_name}}</div>
             <div class="col-sm-4">€ {{this.readable_period_total}}</div>
+            <i class="glyphicon glyphicon-remove pull-right text-danger remove" data-service-index="{{ this.id }}-{{ this.num }}" data-service-id="{{ this.id }}"></i>
         </div>
     </li>
     {{else}}

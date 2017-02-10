@@ -72,7 +72,7 @@ requirejs(['withPricelist'],
                 withData.check_inout = with_checkinout;
             }
 
-            withPricelist.getPricelist(pricelist, withData);
+            withPricelist.initPricelist(pricelist, withData);
         });
     }
 );
