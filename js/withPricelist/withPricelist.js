@@ -47,9 +47,9 @@ define([
                         withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
                         withPricelist.pricelist.find("tbody").removeClass('table_loader_center');
 
-                        if (withPricelist.pricelist.find('table').length) {
+                        if (withPricelist.pricelist.find('.pricelistTable').length) {
                             // refresh table content
-                            withPricelist.pricelist.find('table').html(json.html.table);
+                            withPricelist.pricelist.find('.pricelistTable').html(json.html.table);
                         } else {
                             // init Template
                             var html_tpl = handlebars.compile(master_layout),
@@ -136,7 +136,7 @@ define([
             withPricelist.cartItems = {};
             $(".pt-grand-total-all-periods", withPricelist.pricelist).number(0, 2, ',', ' ').attr('data-amount', 0);
             var grand_total = 0;
-
+            console.info(withPricelist.cartItems);
             // pass trough all quantity of pricelist and add it to cart
             $(".pt-num-cell .num", withPricelist.pricelist).each(function () {
                 // get num of services
@@ -154,7 +154,8 @@ define([
                     var readable_period_total = $(".pt-total-all-periods-" + id, withPricelist.pricelist).text();
 
                     $(".pt-grand-total-all-periods-" + id, withPricelist.pricelist).number(services_periods_total, 2, ',', ' ').attr('data-amount', services_periods_total);
-                    withPricelist.cartItems[id + '-' + num] = ({
+                    console.info(id + '-' + i);
+                    withPricelist.cartItems[id + '-' + i] = ({
                         id: id,
                         num: num,
                         service_name: service_name,
@@ -166,8 +167,11 @@ define([
 
                     grand_total = grand_total + period_total;
                     withPricelist.clog('3.4 - Calcolo: ' + grand_total + ' +');
+                    console.info(withPricelist.cartItems);
                 }
             });
+
+            console.info(withPricelist.cartItems);
 
             // grand total show
             $(".pt-grand-total", withPricelist.pricelist).number(grand_total, 2, ',', ' ');
