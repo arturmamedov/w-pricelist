@@ -100,6 +100,9 @@ define([
                         // refresh table content
                         withPricelist.pricelist.find('.pricelistTable').html(json.html.table);
                         withPricelist.clog('6 - Pricelist updated');
+
+                        withPricelist.clog('3 - Pricelist totals counter');
+                        withPricelist.initCart();
                     } else {
                         // remove loader
                         withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
