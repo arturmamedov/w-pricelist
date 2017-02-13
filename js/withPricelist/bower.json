@@ -29,6 +29,7 @@
     "bootstrap-datepicker": "latest",
     "jquery-number": "latest",
     "handlebars": "^4.0.5",
-    "text": "^2.0.15"
+    "text": "^2.0.15",
+    "handlebars-helper-intl": "^1.1.2"
   }
 }
