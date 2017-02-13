@@ -26,8 +26,9 @@ if (isset($_GET['check_inout'])) {
     $method = 'POST';
 }
 
+require_once 'config.php';
 require_once 'api.php';
-$my_api = new MyApi('Bearer', '03b24089-YOUR-API-KEY-0137ab01b71b');
+$my_api = new MyApi('Bearer', $config['access_token']);
 
 $response = $my_api->http($endpoint, $method, $params, $params);
 
