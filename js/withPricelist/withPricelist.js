@@ -82,8 +82,8 @@ define([
             // add loader
             withPricelist.pricelist.find(".btnSearch").prop('disabled', true);
             // loader for table body
-            withPricelist.pricelist.find("tbody").addClass('table_loader_center').hide('slow', function () {
-                $(this).html('<tr><td colspan="' + withPricelist.pricelist.find('thead th').length + '"><img src="' + requirejs.toUrl('') + 'img/loader.svg" class="loader_table" /></td></tr>').show();
+            $(".pricelistTable", withPricelist.pricelist).find("tbody").addClass('table_loader_center').hide('fast', function () {
+                $(this).html('<tr><td colspan="' + $(".pricelistTable", withPricelist.pricelist).find('thead th').length + '"><img src="' + requirejs.toUrl('') + 'img/loader.svg" class="loader_table" /></td></tr>').show();
             });
 
             $.ajax({
@@ -95,7 +95,7 @@ define([
                     if (json.success) {
                         // remove loader
                         withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
-                        withPricelist.pricelist.find("tbody").removeClass('table_loader_center');
+                        $(".pricelistTable", withPricelist.pricelist).find("tbody").removeClass('table_loader_center');
 
                         // refresh table content
                         withPricelist.pricelist.find('.pricelistTable').html(json.html.table);
