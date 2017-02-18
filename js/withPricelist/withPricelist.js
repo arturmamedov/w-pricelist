@@ -86,6 +86,16 @@ define([
                 $(this).html('<tr><td colspan="' + $(".pricelistTable", withPricelist.pricelist).find('thead th').length + '"><img src="' + requirejs.toUrl('') + 'img/loader.svg" class="loader_table" /></td></tr>').show();
             });
 
+            // if isset children etc. pass it
+            var with_adults = withPricelist.pricelist.attr('data-with-adults'),
+                with_children = withPricelist.pricelist.attr('data-with-children'),
+                with_children_age = withPricelist.pricelist.attr('data-with-children-age');
+
+            withData.adults = (typeof with_adults == "undefined" || with_adults.length == 0) ? 1 : with_adults;
+            withData.children = (typeof with_children == "undefined" || with_children.length == 0) ? 0 : with_children;
+            withData.children_age = (typeof with_children_age == "undefined" || with_children_age.length == 0) ? [] : with_children_age.split(',');
+
+            withPricelist.clog('Update data');
             $.ajax({
                 url: requirejs.toUrl('') + 'requests.php',
                 method: 'GET',
