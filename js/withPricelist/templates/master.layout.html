@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-sm-8">
+    <div class="{{#if opt.opt_pricelist_search }}col-sm-8{{else}}col-sm-12{{/if}}">
         {{{ html.table }}}
 
         {{#if html.datepicker }}
@@ -11,8 +11,13 @@
         {{/if}}
     </div>
 
+    {{#if opt.opt_pricelist_search }}
     <div class="col-sm-4 withCart">
         {{> withCart }}
     </div>
+    {{/if}}
 </div>
+
+{{#if opt.opt_pricelist_search }}
 {{> withModal }}
+{{/if}}

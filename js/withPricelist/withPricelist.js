@@ -49,10 +49,13 @@ define([
                             modal_tpl = handlebars.compile(modal_layout),
                             modal_items_tpl = handlebars.compile(modal_items_layout);
 
-                        handlebars.registerPartial('withCart', cart_tpl);
-                        handlebars.registerPartial('withCartItems', cart_items_tpl);
-                        handlebars.registerPartial('withModal', modal_tpl);
-                        handlebars.registerPartial('withModalItems', modal_items_tpl);
+                        // if search enabled add the needed partials templates to master
+                        if (json.opt.opt_pricelist_search) {
+                            handlebars.registerPartial('withCart', cart_tpl);
+                            handlebars.registerPartial('withCartItems', cart_items_tpl);
+                            handlebars.registerPartial('withModal', modal_tpl);
+                            handlebars.registerPartial('withModalItems', modal_items_tpl);
+                        }
 
                         withPricelist.pricelist.html(html_tpl(json));
                         withPricelist.clog('1 - Pricelist generated');
@@ -117,14 +120,14 @@ define([
                         // remove loader
                         withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
 
-                        withPricelist.pricelist.find('table').html('<span class="help-block alert alert-danger">' + json.message + '</span>');
+                        withPricelist.pricelist.find('.pricelistTable').html('<span class="help-block alert alert-danger">' + json.message + '</span>');
                     }
                 },
                 error: function () {
                     // remove loader
                     withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
 
-                    withPricelist.pricelist.find('table').html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
+                    withPricelist.pricelist.find('.pricelistTable').html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
                 }
             });
         },
@@ -235,8 +238,14 @@ define([
 
         updateCartItems: function () {
             withPricelist.cartData.cartItems = withPricelist.cartItems;
+
+            // in cart
             var cart_items_tpl = handlebars.compile(cart_items_layout);
             $('.withCart .withCartContent', withPricelist.pricelist).html(cart_items_tpl(withPricelist.cartData));
+
+            // in modal
+            var modal_items_tpl = handlebars.compile(modal_items_layout);
+            $(".modal", withPricelist.pricelist).find('.modal-list').html(modal_items_tpl(withPricelist.cartData));
         },
 
         initCart: function () {
@@ -253,10 +262,10 @@ define([
                 });
 
                 // attach event on modal open
-                $(".modal", withPricelist.pricelist).on('show.bs.modal', function () {
-                    var modal_items_tpl = handlebars.compile(modal_items_layout);
-                    $(this).find('.modal-list').html(modal_items_tpl(withPricelist.cartData));
-                });
+                // $(".modal", withPricelist.pricelist).on('show.bs.modal', function () {
+                //     var modal_items_tpl = handlebars.compile(modal_items_layout);
+                //     $(this).find('.modal-list').html(modal_items_tpl(withPricelist.cartData));
+                // });
 
                 // attach event on modal form submit
                 $(".modal-form", withPricelist.pricelist).on('submit', function () {
@@ -346,7 +355,7 @@ define([
                     withData.id = pricelist_id;
 
 
-                    withData.check_inout = $('.checkin', bs_datepicker).val() + '-' + $('.checkout').val();
+                    withData.check_inout = $('.checkin', bs_datepicker).val() + '-' + $('.checkout', bs_datepicker).val();
 
                     withPricelist.clog('4.3 - Datapicker data: ');
                     console.info(withData);

@@ -6,6 +6,11 @@ requirejs.config({
         datepicker: 'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min',
         handlebars: 'bower_components/handlebars/handlebars.amd',
         text: 'bower_components/text/text',
+    },
+    "shim": {
+        "bootstrap": {exports: 'bootstrap', deps: ['jquery']},
+        "datepicker": {exports: 'datepicker', deps: ['jquery', 'bootstrap']},
+        "number": {exports: 'number', deps: ['jquery']}
     }
 });
 var withBaseUrl = requirejs.toUrl(''),
