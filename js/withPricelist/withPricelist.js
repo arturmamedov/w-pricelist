@@ -15,10 +15,17 @@ define([
     'text!templates/modal_items.html'
 ], function ($, number, datepicker, handlebars, bootstrap, master_layout, cart_layout, cart_items_layout, modal_layout, modal_items_layout) {
     var withPricelist = {
+        // debug for show log message
         debug: true,
+        // default language 'auto' (if it not set in html attr, or not found in browser = 'it')
         lang: 'it',
+        // current pricelist item
         pricelist: {},
+        // data for perform request
+        withData: {},
+        // cartData, with grand_total etc.
         cartData: {},
+        // cartItems, all selected services
         cartItems: {},
 
         clog: function (text) {
@@ -29,23 +36,79 @@ define([
 
         // getPricelist: function (withData) {}, maybe with callback method showPricelist() ... but for the moment need ajax callback, success
 
-        initPricelist: function (pricelist, withData) {
-            withPricelist.pricelist = pricelist;
+        setPageData: function () {
+            var pricelist_id,
+                with_slug = withPricelist.pricelist.attr('data-with-slug'),
+                with_id = withPricelist.pricelist.attr('data-with-id'),
+                with_checkinout = withPricelist.pricelist.attr('data-checkinout'),
+                with_check_in = withPricelist.pricelist.attr('data-checkin'),
+                with_check_out = withPricelist.pricelist.attr('data-checkout');
 
-            // if form not send data and isset adults, children on pricelist data pass it
+            // lang of request
+            withPricelist.withData.lang = withPricelist.getLanguage();
+
+            // pricelist id
+            if (typeof with_slug == "undefined" || with_slug.length == 0) {
+                pricelist_id = with_id;
+            } else {
+                pricelist_id = with_slug;
+            }
+            withPricelist.withData.id = pricelist_id;
+
+            // if isset check_in/out
+            if (typeof with_check_in != 'undefined' && with_check_in.length > 0 && typeof with_check_out != 'undefined' && with_check_out.length > 0) {
+                withPricelist.withData.check_in = with_check_in;
+                withPricelist.withData.check_out = with_check_out;
+            }
+            else if (typeof with_checkinout != 'undefined' && with_checkinout.length > 0) {
+                withPricelist.withData.check_inout = with_checkinout;
+            }
+
+            // adults, children, children_age on pricelist data
             var with_adults = withPricelist.pricelist.attr('data-with-adults'),
                 with_children = withPricelist.pricelist.attr('data-with-children'),
                 with_children_age = withPricelist.pricelist.attr('data-with-children-age');
 
-            withData.adults = (typeof with_adults == "undefined" || with_adults.length == 0) ? 1 : with_adults;
-            withData.children = (typeof with_children == "undefined" || with_children.length == 0) ? 0 : with_children;
-            withData.children_age = (typeof with_children_age == "undefined" || with_children_age.length == 0) ? [] : with_children_age.split(',');
+            withPricelist.withData.adults = (typeof with_adults == "undefined" || with_adults.length == 0) ? 1 : with_adults;
+            withPricelist.withData.children = (typeof with_children == "undefined" || with_children.length == 0) ? 0 : with_children;
+            withPricelist.withData.children_age = (typeof with_children_age == "undefined" || with_children_age.length == 0) ? [] : with_children_age.split(',');
+
+            withPricelist.clog('setPageData');
+            withPricelist.clog(withPricelist.withData);
+        },
+
+        setFormData: function (formSelector) {
+            if (typeof formSelector.length == 'undefined' || formSelector.length > 0) {
+                formSelector = $('.period', withPricelist.pricelist);
+            }
+
+
+            var formData = {};
+            formSelector.serializeArray().map(function (x) {
+                if (x.name != 'check_in' && x.name != 'check_out') {
+                    formData[x.name] = x.value;
+                }
+            });
+
+            formData.check_inout = $('.checkin', formSelector).val() + '-' + $('.checkout', formSelector).val();
+
+            // add form data to yet set withData
+            jQuery.extend(withPricelist.withData, formData);
+
+            withPricelist.clog('setFormData');
+            withPricelist.clog(withPricelist.withData);
+        },
+
+        initPricelist: function (pricelist) {
+            withPricelist.pricelist = pricelist;
+
+            withPricelist.setPageData();
 
             $.ajax({
                 url: requirejs.toUrl('') + 'requests.php',
                 method: 'GET',
                 dataType: 'json',
-                data: withData,
+                data: withPricelist.withData,
                 success: function (json) {
                     if (json.success) {
                         // remove loader
@@ -53,7 +116,7 @@ define([
 
                         // disable cart at this point if search not yet performed
                         // @todo: here we need a control to option to, and it may be override from client js
-                        if (typeof withData.check_inout != 'undefined' || typeof withData.with_check_in != 'undefined') {
+                        if (typeof withPricelist.withData.check_inout != 'undefined' || typeof withPricelist.withData.with_check_in != 'undefined') {
                             json.opt.opt_pricelist_cart_modal = true;
                         } else {
                             json.opt.opt_pricelist_cart_modal = false;
@@ -62,18 +125,6 @@ define([
                         // render pricelist with all layouts
                         withPricelist.renderPricelist(json);
                         withPricelist.clog('1 - Pricelist generated');
-
-                        if (json.opt.opt_pricelist_search) {
-                            withPricelist.clog('2 - Pricelist search opt enabled');
-                            // if its a search request init Prices
-                            if (typeof withData.check_inout != 'undefined' || typeof withData.with_check_in != 'undefined') {
-                                withPricelist.clog('3 - Pricelist totals counter');
-                                withPricelist.initCart();
-                            }
-                            // show datepicker
-                            withPricelist.clog('4 - Pricelist datepicker');
-                            withPricelist.initDatepicker();
-                        }
                     } else {
                         withPricelist.pricelist.html('<span class="help-block alert alert-danger">' + json.message + '</span>');
                     }
@@ -84,7 +135,7 @@ define([
             });
         },
 
-        updatePricelist: function (withData) {
+        updatePricelist: function () {
             // add loader
             withPricelist.pricelist.find(".btnSearch").prop('disabled', true);
             // loader for table body
@@ -92,21 +143,13 @@ define([
                 $(this).html('<tr><td colspan="' + $(".pricelistTable", withPricelist.pricelist).find('thead th').length + '"><img src="' + requirejs.toUrl('') + 'img/loader.svg" class="loader_table" /></td></tr>').show();
             });
 
-            // if isset children etc. pass it
-            var with_adults = withPricelist.pricelist.attr('data-with-adults'),
-                with_children = withPricelist.pricelist.attr('data-with-children'),
-                with_children_age = withPricelist.pricelist.attr('data-with-children-age');
+            withPricelist.setFormData($('.period', withPricelist.pricelist));
 
-            withData.adults = (typeof with_adults == "undefined" || with_adults.length == 0) ? 1 : with_adults;
-            withData.children = (typeof with_children == "undefined" || with_children.length == 0) ? 0 : with_children;
-            withData.children_age = (typeof with_children_age == "undefined" || with_children_age.length == 0) ? [] : with_children_age.split(',');
-
-            withPricelist.clog('Update data');
             $.ajax({
                 url: requirejs.toUrl('') + 'requests.php',
                 method: 'GET',
                 dataType: 'json',
-                data: withData,
+                data: withPricelist.withData,
                 success: function (json) {
                     if (json.success) {
                         // remove loader
@@ -156,6 +199,18 @@ define([
             }
 
             withPricelist.pricelist.html(html_tpl(data));
+
+            if (data.opt.opt_pricelist_search) {
+                withPricelist.clog('2 - Pricelist search opt enabled');
+                // if its a search request init Prices
+                if (typeof withPricelist.withData.check_inout != 'undefined' || typeof withPricelist.withData.with_check_in != 'undefined') {
+                    withPricelist.clog('3 - Pricelist totals counter');
+                    withPricelist.initCart();
+                }
+                // show datepicker
+                withPricelist.clog('4 - Pricelist datepicker');
+                withPricelist.initDatepicker();
+            }
         },
 
         submitModal: function (modalFrom) {
@@ -364,29 +419,9 @@ define([
                 bs_datepicker.on('submit', function (e) {
                     withPricelist.clog('4.3 - Datapicker send new request');
 
-                    var withData = {},
-                        pricelist_id,
-                        with_slug = withPricelist.pricelist.attr('data-with-slug'),
-                        with_id = withPricelist.pricelist.attr('data-with-id'),
-                        with_lang = withPricelist.getLanguage();
-
-                    withData.lang = with_lang;
-
-                    // pricelist id
-                    if (typeof with_slug == "undefined" || with_slug.length == 0) {
-                        pricelist_id = with_id;
-                    } else {
-                        pricelist_id = with_slug;
-                    }
-                    withData.id = pricelist_id;
-
-
-                    withData.check_inout = $('.checkin', bs_datepicker).val() + '-' + $('.checkout', bs_datepicker).val();
-
-                    withPricelist.clog('4.3 - Datapicker data: ');
-                    console.info(withData);
                     // update pricelist
-                    withPricelist.updatePricelist(withData);
+                    withPricelist.updatePricelist();
+
                     // reset cart
                     withPricelist.cartItems = {};
                     withPricelist.updateCartItems();
