@@ -1,23 +1,27 @@
 <div class="row">
-    <div class="{{#if opt.opt_pricelist_search }}col-sm-8{{else}}col-sm-12{{/if}}">
+    <div class="{{#if opt.opt_pricelist_cart_modal }}col-sm-8{{else}}col-sm-12{{/if}}">
         {{{ html.table }}}
 
+        {{#if opt.opt_pricelist_search }}
         {{#if html.datepicker }}
         {{{ html.datepicker }}}
         {{/if}}
+        {{/if}}
 
+        {{#if opt.opt_pricelist_description }}
         {{#if html.description }}
         {{{ html.description }}}
         {{/if}}
+        {{/if}}
     </div>
 
-    {{#if opt.opt_pricelist_search }}
+    {{#if opt.opt_pricelist_cart_modal }}
     <div class="col-sm-4 withCart">
         {{> withCart }}
     </div>
     {{/if}}
 </div>
 
-{{#if opt.opt_pricelist_search }}
+{{#if opt.opt_pricelist_cart_modal }}
 {{> withModal }}
 {{/if}}

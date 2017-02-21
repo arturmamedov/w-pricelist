@@ -32,6 +32,15 @@ define([
         initPricelist: function (pricelist, withData) {
             withPricelist.pricelist = pricelist;
 
+            // if form not send data and isset adults, children on pricelist data pass it
+            var with_adults = withPricelist.pricelist.attr('data-with-adults'),
+                with_children = withPricelist.pricelist.attr('data-with-children'),
+                with_children_age = withPricelist.pricelist.attr('data-with-children-age');
+
+            withData.adults = (typeof with_adults == "undefined" || with_adults.length == 0) ? 1 : with_adults;
+            withData.children = (typeof with_children == "undefined" || with_children.length == 0) ? 0 : with_children;
+            withData.children_age = (typeof with_children_age == "undefined" || with_children_age.length == 0) ? [] : with_children_age.split(',');
+
             $.ajax({
                 url: requirejs.toUrl('') + 'requests.php',
                 method: 'GET',
@@ -42,22 +51,16 @@ define([
                         // remove loader
                         withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
 
-                        // init Template
-                        var html_tpl = handlebars.compile(master_layout),
-                            cart_tpl = handlebars.compile(cart_layout),
-                            cart_items_tpl = handlebars.compile(cart_items_layout),
-                            modal_tpl = handlebars.compile(modal_layout),
-                            modal_items_tpl = handlebars.compile(modal_items_layout);
-
-                        // if search enabled add the needed partials templates to master
-                        if (json.opt.opt_pricelist_search) {
-                            handlebars.registerPartial('withCart', cart_tpl);
-                            handlebars.registerPartial('withCartItems', cart_items_tpl);
-                            handlebars.registerPartial('withModal', modal_tpl);
-                            handlebars.registerPartial('withModalItems', modal_items_tpl);
+                        // disable cart at this point if search not yet performed
+                        // @todo: here we need a control to option to, and it may be override from client js
+                        if (typeof withData.check_inout != 'undefined' || typeof withData.with_check_in != 'undefined') {
+                            json.opt.opt_pricelist_cart_modal = true;
+                        } else {
+                            json.opt.opt_pricelist_cart_modal = false;
                         }
 
-                        withPricelist.pricelist.html(html_tpl(json));
+                        // render pricelist with all layouts
+                        withPricelist.renderPricelist(json);
                         withPricelist.clog('1 - Pricelist generated');
 
                         if (json.opt.opt_pricelist_search) {
@@ -110,8 +113,11 @@ define([
                         withPricelist.pricelist.find(".btnSearch").prop('disabled', false);
                         $(".pricelistTable", withPricelist.pricelist).find("tbody").removeClass('table_loader_center');
 
-                        // refresh table content
-                        withPricelist.pricelist.find('.pricelistTable').html(json.html.table);
+                        // @todo: cart and modal need own option
+                        json.opt.opt_pricelist_cart_modal = json.opt.opt_pricelist_search;
+
+                        // render pricelist with all layouts
+                        withPricelist.renderPricelist(json);
                         withPricelist.clog('6 - Pricelist updated');
 
                         withPricelist.clog('3 - Pricelist totals counter');
@@ -130,6 +136,26 @@ define([
                     withPricelist.pricelist.find('.pricelistTable').html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
                 }
             });
+        },
+
+        renderPricelist: function (data) {
+            // init Templates
+            var html_tpl = handlebars.compile(master_layout);
+
+            // if search enabled add the needed partials templates to master
+            if (data.opt.opt_pricelist_cart_modal) {
+                var cart_tpl = handlebars.compile(cart_layout),
+                    cart_items_tpl = handlebars.compile(cart_items_layout),
+                    modal_tpl = handlebars.compile(modal_layout),
+                    modal_items_tpl = handlebars.compile(modal_items_layout);
+
+                handlebars.registerPartial('withCart', cart_tpl);
+                handlebars.registerPartial('withCartItems', cart_items_tpl);
+                handlebars.registerPartial('withModal', modal_tpl);
+                handlebars.registerPartial('withModalItems', modal_items_tpl);
+            }
+
+            withPricelist.pricelist.html(html_tpl(data));
         },
 
         submitModal: function (modalFrom) {
