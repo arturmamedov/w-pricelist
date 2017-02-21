@@ -213,7 +213,7 @@ define([
             }
         },
 
-        submitModal: function (modalFrom) {
+        submitModal: function (modalForm) {
             // add loader
             withPricelist.pricelist.find(".btnModal").prop('disabled', true);
 
@@ -221,27 +221,27 @@ define([
                 url: requirejs.toUrl('') + 'post_requests.php',
                 method: 'POST',
                 dataType: 'json',
-                data: modalFrom.serialize(),
+                data: modalForm.serialize(),
                 success: function (json) {
                     if (json.success) {
                         // remove loader
                         withPricelist.pricelist.find(".btnModal").prop('disabled', false);
 
-                        // success message, animations.... @todo
-                        //.html(json.html.table);
+                        // success message
+                        withPricelist.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
 
                         withPricelist.clog('5 - Modal Form Submitted');
                     } else {
                         // remove loader
                         withPricelist.pricelist.find(".btnModal").prop('disabled', false);
 
-                        // error message ... @todo
-                        //.html('<span class="help-block alert alert-danger">' + json.message + '</span>');
+                        // error message
+                        withPricelist.pricelist.find(".btnModal").after('<p class="text-danger text-center">' + json.message + ' <i class="glyphicon glyphicon-remove text-danger"></i></p>');
                     }
                 },
                 error: function () {
-                    // general error message ... @todo
-                    //.html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
+                    // general error message
+                    withPricelist.pricelist.find(".btnModal").after('<p class="text-danger text-center">Email error! Errore durante l\'invio, per favore riprova! <i class="glyphicon glyphicon-remove text-danger"></i></p>');
                 }
             });
         },
@@ -330,10 +330,22 @@ define([
         },
 
         initCart: function () {
+            // if (withPricelist.pricelist.find('.withCart').hasClass("cart_enabled")) {
             if (withPricelist.pricelist.hasClass("cart_enabled")) {
                 // cart events yet enabled
                 withPricelist.clog('3.2 - Cart yet here');
+
+                $('.withCartBox', withPricelist.pricelist).affix({
+                    offset: {
+                        top: $('.withCart', withPricelist.pricelist).offset().top,
+                        bottom: $(document).height() - withPricelist.pricelist.offset().top - withPricelist.pricelist.height()
+                    }
+                }).css({
+                    "width": $('.withCartBox', withPricelist.pricelist).outerWidth() + 'px'
+                    //, "left": $('.withCartBox', withPricelist.pricelist).offset().left
+                });
             } else {
+                // withPricelist.pricelist.find('.withCart').addClass('cart_enabled');
                 withPricelist.pricelist.addClass('cart_enabled');
                 withPricelist.clog('3.1 - Cart events enabled');
 
@@ -349,7 +361,7 @@ define([
                 // });
 
                 // attach event on modal form submit
-                $(".modal-form", withPricelist.pricelist).on('submit', function () {
+                $(withPricelist.pricelist).on('submit', ".modal-form", function () {
                     withPricelist.submitModal($(this));
                     return false;
                 });
@@ -358,18 +370,8 @@ define([
                     withPricelist.addToCart($(this).attr('data-service-id'));
                 });
 
-                $('.withCartBox', withPricelist.pricelist).on('click', '.remove', function () {
+                $(withPricelist.pricelist).on('click', '.withCartBox .remove', function () {
                     withPricelist.removeFromCart($(this).attr('data-service-index'), $(this).attr('data-service-id'));
-                });
-
-                $('.withCartBox', withPricelist.pricelist).affix({
-                    offset: {
-                        top: $('.withCart', withPricelist.pricelist).offset().top,
-                        bottom: $(document).height() - withPricelist.pricelist.offset().top - withPricelist.pricelist.height()
-                    }
-                }).css({
-                    "width": $('.withCartBox', withPricelist.pricelist).outerWidth() + 'px'
-                    //, "left": $('.withCartBox', withPricelist.pricelist).offset().left
                 });
             }
 
