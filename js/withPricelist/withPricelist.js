@@ -198,6 +198,8 @@ define([
                 handlebars.registerPartial('withModalItems', modal_items_tpl);
             }
 
+            // merge json returned 'data' with the form or page data that are used to init/update
+            data = $.extend(withPricelist.withData, data);
             withPricelist.pricelist.html(html_tpl(data));
 
             if (data.opt.opt_pricelist_search) {
