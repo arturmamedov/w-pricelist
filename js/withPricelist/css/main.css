@@ -33,3 +33,8 @@
 .add-service {
     cursor: pointer;
 }
+
+/* Tools */
+.display-none {
+    display: none;
+}

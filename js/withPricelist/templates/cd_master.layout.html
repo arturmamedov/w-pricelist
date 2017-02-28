@@ -1,9 +1,10 @@
+<!-- custom datepicker layout (for get it work uncomment partials datepicker definition in renderPricelist() and the dependencies loader in withPricelist requirjs) -->
 <div class="row">
     <div class="{{#if opt.opt_pricelist_cart_modal }}col-sm-8{{else}}col-sm-12{{/if}}">
         {{{ html.table }}}
 
         {{#if opt.opt_pricelist_search }}
-        {{{ html.datepicker }}}
+        {{> withDatepicker }}
         {{/if}}
 
         {{#if opt.opt_pricelist_description }}

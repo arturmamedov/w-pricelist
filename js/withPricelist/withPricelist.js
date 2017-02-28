@@ -9,6 +9,7 @@ define([
     'bootstrap',
 
     'text!templates/master.layout.html',
+    // 'text!templates/datepicker.html', datepicker_layout
     'text!templates/cart.html',
     'text!templates/cart_items.html',
     'text!templates/modal.html',
@@ -18,11 +19,17 @@ define([
         // debug for show log message
         debug: true,
         // default language 'auto' (if it not set in html attr, or not found in browser = 'it')
-        lang: 'it',
+        lang: 'auto',
         // current pricelist item
         pricelist: {},
-        // data for perform request
+        // data for perform request FORM data, and need to be shorter as possible
         withData: {},
+        // all data that application collect from first to last request
+        withAllData: {
+            urls: {
+                privacy: '/privacy-policy'
+            }
+        },
         // cartData, with grand_total etc.
         cartData: {},
         // cartItems, all selected services
@@ -82,15 +89,23 @@ define([
                 formSelector = $('.period', withPricelist.pricelist);
             }
 
-
             var formData = {};
+
+            var check_in = '', check_out = '', children_age = [];
             formSelector.serializeArray().map(function (x) {
-                if (x.name != 'check_in' && x.name != 'check_out') {
+                if (x.name == 'check_in') {
+                    check_in = x.value;
+                } else if (x.name == 'check_out') {
+                    check_out = x.value;
+                } else if (x.name == 'children_age[]') {
+                    children_age.push(x.value);
+                } else {
                     formData[x.name] = x.value;
                 }
             });
 
-            formData.check_inout = $('.checkin', formSelector).val() + '-' + $('.checkout', formSelector).val();
+            formData.check_inout = check_in + '-' + check_out;
+            formData.children_age = children_age;
 
             // add form data to yet set withData
             jQuery.extend(withPricelist.withData, formData);
@@ -139,7 +154,7 @@ define([
             // add loader
             withPricelist.pricelist.find(".btnSearch").prop('disabled', true);
             // loader for table body
-            $(".pricelistTable", withPricelist.pricelist).find("tbody").addClass('table_loader_center').hide('fast', function () {
+            $(".pricelistTable", withPricelist.pricelist).find(".pricelistResult").addClass('table_loader_center').hide('fast', function () {
                 $(this).html('<tr><td colspan="' + $(".pricelistTable", withPricelist.pricelist).find('thead th').length + '"><img src="' + requirejs.toUrl('') + 'img/loader.svg" class="loader_table" /></td></tr>').show();
             });
 
@@ -182,8 +197,17 @@ define([
         },
 
         renderPricelist: function (data) {
+            withPricelist.clog('renderData');
+            withPricelist.clog(data);
+
             // init Templates
             var html_tpl = handlebars.compile(master_layout);
+
+            // custom datepicker - if search datepicker enabled add the needed partials templates to master
+            // if (data.opt.opt_pricelist_search) {
+            //     var datepicker_tpl = handlebars.compile(datepicker_layout);
+            //     handlebars.registerPartial('withDatepicker', datepicker_tpl);
+            // }
 
             // if search enabled add the needed partials templates to master
             if (data.opt.opt_pricelist_cart_modal) {
@@ -199,8 +223,8 @@ define([
             }
 
             // merge json returned 'data' with the form or page data that are used to init/update
-            data = $.extend(withPricelist.withData, data);
-            withPricelist.pricelist.html(html_tpl(data));
+            withPricelist.withAllData = $.extend(data, withPricelist.withData);
+            withPricelist.pricelist.html(html_tpl(withPricelist.withAllData));
 
             if (data.opt.opt_pricelist_search) {
                 withPricelist.clog('2 - Pricelist search opt enabled');
@@ -219,18 +243,25 @@ define([
             // add loader
             withPricelist.pricelist.find(".btnModal").prop('disabled', true);
 
+            var serializedData = modalForm.serialize();
+            if (typeof withPricelist.withData.children_age != 'undefined' && withPricelist.withData.children_age.length > 0) {
+                serializedData = serializedData + '&params[children_age]=' + withPricelist.withData.children_age.toString();
+            }
+
             $.ajax({
                 url: requirejs.toUrl('') + 'post_requests.php',
                 method: 'POST',
                 dataType: 'json',
-                data: modalForm.serialize(),
+                data: serializedData,
                 success: function (json) {
                     if (json.success) {
+                        // GAT - ga('send', 'pageview', '/email-form-preventivo');
+
                         // remove loader
                         withPricelist.pricelist.find(".btnModal").prop('disabled', false);
 
                         // success message
-                        withPricelist.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
+                        //withPricelist.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
 
                         withPricelist.clog('5 - Modal Form Submitted');
                     } else {
@@ -301,10 +332,10 @@ define([
         },
 
         addToCart: function (id) {
-            var value = parseInt($("tr.service" + id + " .pt-num-cell .num", withPricelist.pricelist).val()), quantity;
+            var value = parseInt($(".service" + id + " .pt-num-cell .num", withPricelist.pricelist).val()), quantity;
             value = (isNaN(value)) ? 0 : value;
             quantity = value + 1
-            $("tr.service" + id + " .pt-num-cell .num", withPricelist.pricelist).val(quantity);
+            $(".service" + id + " .pt-num-cell .num", withPricelist.pricelist).val(quantity);
 
             withPricelist.cartTotals();
         },
@@ -312,9 +343,9 @@ define([
         removeFromCart: function (index, id) {
             delete withPricelist.cartItems[index];
 
-            var quantity, value = parseInt($("tr.service" + id + " .pt-num-cell .num", withPricelist.pricelist).val());
+            var quantity, value = parseInt($(".service" + id + " .pt-num-cell .num", withPricelist.pricelist).val());
             quantity = ((value - 1) <= 0) ? 0 : value - 1;
-            $("tr.service" + id + " .pt-num-cell .num", withPricelist.pricelist).val(quantity);
+            $(".service" + id + " .pt-num-cell .num", withPricelist.pricelist).val(quantity);
 
             withPricelist.cartTotals();
         },
@@ -391,6 +422,8 @@ define([
                 bs_datepicker.addClass('dp_enabled');
 
                 var date = new Date(),
+                    start_date = new Date(withPricelist.withAllData.iso_start_date),
+                    end_date = new Date(withPricelist.withAllData.iso_end_date),
                     bsdp_lang_code = bs_datepicker.attr('data-lang');
 
                 if (typeof bsdp_lang_code == 'undefined' || bsdp_lang_code.length == 0) {
@@ -400,12 +433,16 @@ define([
                     bsdp_lang_code = 'en-GB';
                 }
 
-                // contact page datepicker
+                if (date.getTime() > start_date.getTime()) {
+                    start_date = date;
+                }
+
+                // date picker
                 bs_datepicker.datepicker({
-                    //startDate: date.toString(),
-                    //endDate: date.setDate(date.getDate() + 400).toString(),
+                    startDate: start_date.getDate() + '/' + (start_date.getMonth() + 1) + '/' + start_date.getFullYear(),
+                    endDate: end_date.getDate() + '/' + (end_date.getMonth() + 1) + '/' + end_date.getFullYear(),
                     format: 'dd/mm/yyyy',
-                    inputs: $('.range'),
+                    inputs: $('.range', bs_datepicker),
                     todayHighlight: true,
                     todayBtn: 'linked',
                     daysOfWeekHighlighted: "0",
@@ -421,6 +458,7 @@ define([
                     });
 
                 bs_datepicker.on('submit', function (e) {
+                    // GAT - ga('send', 'event', 'preventivo', 'calcola', 'sito-web', '5');
                     withPricelist.clog('4.3 - Datapicker send new request');
 
                     // update pricelist
@@ -431,6 +469,92 @@ define([
                     withPricelist.updateCartItems();
                     return false;
                 });
+
+                /**
+                 * childNum counter
+                 * ex:
+                 *
+                 * <form class="... children_age_form"> ...
+                 * <input type="number" class="form-control child_num_input" min="0" max="4" name="num_children">
+                 *
+                 *     and
+                 *
+                 *     <div class="col-sm-2 pull-right display-none" id="child_ageClone">
+                 *           <div class="form-group">
+                 *               <input type="number" placeholder="0" class="form-control" name="age_children[]" value="1" max="17" min="1" disabled/>
+                 *
+                 *           <label>Children <span class="jq_child_num">1</span></label>
+                 *           </div>
+                 *        </div>
+                 *  and
+                 *  impolode(',', $_POST['age_children']) in PHP
+                 *
+                 * max children: 4 @todo: configurabe
+                 * @todo: keep values of yet insterted children ages
+                 * @type {any}
+                 */
+                // $(".children_age_form", withPricelist.pricelist).each(function () {
+                //     var form = $(this);
+                //     form.on('keyup change', '.child_num_input', function () {
+                //         // if counter are equal 0 - do nothing
+                //         var _childNum = $('.child_num_input', form).val();
+                //         if (_childNum == 0) {
+                //             childNum = 0;
+                //             $("[id^='child_age_']", form).remove();
+                //             return false;
+                //         }
+                //         // over 4 chlids are invalid
+                //         if (_childNum > 4) {
+                //             $('body').gdivMessage('No more then 4 childs / Non più di 4 bambini', 'warning', {hidetime: 7000});
+                //             $('.child_num_input', form).val(4);
+                //             return false;
+                //         }
+                //
+                //         $("[id^='child_age_']", form).remove();
+                //         for (var _cN = 1; _cN <= _childNum; _cN++) {
+                //             var childClone = $('#child_ageClone', form).clone();
+                //
+                //             // change params
+                //             childClone.attr('id', 'child_age_' + _cN);
+                //             childClone.find('.jq_child_num').text(_cN);
+                //             childClone.find('input').prop("disabled", false).removeProp('disabled').val(parseInt(withPricelist.withData.children_age[_cN - 1]));
+                //
+                //             // attach and show
+                //             $('#child_ageClone', form).after(childClone);
+                //             childClone.show();
+                //
+                //             form.css('padding-bottom', '10px');
+                //         }
+                //         childNum = $('.child_num_input', form).val();
+                //     });
+                //
+                //     // init childNum counter
+                //     function addAges(childNum) {
+                //         for (var _childNum = 1; _childNum <= childNum; _childNum++) {
+                //             if (_childNum > 4) {
+                //                 $('.child_num_input', form).val(4);
+                //                 return false;
+                //             }
+                //             var childClone = $('#child_ageClone', form).clone();
+                //
+                //             // change params
+                //             childClone.attr('id', 'child_age_' + _childNum);
+                //             childClone.find('.jq_child_num').text(_childNum);
+                //             childClone.find('input').prop("disabled", false).removeProp('disabled').val(parseInt(withPricelist.withData.children_age[_childNum - 1]));
+                //
+                //             // attach and show
+                //             $('#child_ageClone', form).after(childClone);
+                //             childClone.show();
+                //
+                //             form.css('padding-bottom', '10px');
+                //         }
+                //     }
+                //
+                //     var childNum = $('.child_num_input', form).val();
+                //     if (childNum > 0) {
+                //         addAges(childNum);
+                //     }
+                // });
             }
         },
 
@@ -460,10 +584,10 @@ define([
         },
 
         getLanguage: function () {
-            if (withPricelist.lang.length) {
+            if (withPricelist.lang.length > 0 && withPricelist.lang != 'auto') {
                 return withPricelist.lang;
             } else {
-                return withPricelist.setLanguage('');
+                return withPricelist.setLanguage('auto');
             }
         },
     };
