@@ -63,7 +63,7 @@ cartItems: {},
 
 ## Methods
 
-##### initPricelist()
+#### initPricelist()
 Initialize Pricelist and do the first Ajax call trough `request.php` to the API end point for get the pricelist json data and show it the first time to page. 
 Bind to `pricelist` property the container object.
 
