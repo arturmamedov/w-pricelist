@@ -33,7 +33,7 @@ requirejs(['withPricelist'],
             document.getElementsByTagName("head")[0].appendChild(link);
         }
 
-        for (css in requirecss) {
+        for (var css in requirecss) {
             loadCss(requirecss[css]);
         }
 
@@ -41,9 +41,13 @@ requirejs(['withPricelist'],
         $pricelists = $('.withPricelist');
         $pricelists.html('<img src="' + withBaseUrl + 'img/loader.svg" class="loader" />');
 
+        var p = 1, _wp = [];
         $pricelists.each(function () {
-            // date was set internally @todo: callbacks
-            withPricelist.initPricelist($(this));
+            var pricelist = $(this);
+            _wp[p] = new withPricelist(pricelist);
+            // @todo: callbacks
+            _wp[p].initPricelist();
+            p++;
         });
     }
 );
