@@ -120,7 +120,7 @@ define([
         formData.children_age = children_age;
 
         // add form data to yet set withData
-        jQuery.extend(this.withData, formData);
+        $.extend(this.withData, formData);
 
         this.clog('setFormData');
         this.clog(this.withData);
@@ -336,7 +336,7 @@ define([
             var n = parseInt($(this).val()), num = n || 0;
 
             // if quantity of service is greater then 0 add it!
-            for (i = 1; i <= num; i++) {
+            for (var i = 1; i <= num; i++) {
                 var id = parseInt($(this).attr('data-id')),
                     period_total = parseFloat($(".pt-total-all-periods-" + id, _wp.pricelist).attr('data-amount')),
                     service_name = $(".pt-total-all-periods-" + id, _wp.pricelist).attr('data-service-name'),
@@ -375,7 +375,7 @@ define([
     withPricelist.prototype.addToCart = function (id) {
         var value = parseInt($(".service" + id + " .pt-num-cell .num", this.pricelist).val()), quantity;
         value = (isNaN(value)) ? 0 : value;
-        quantity = value + 1
+        quantity = value + 1;
         $(".service" + id + " .pt-num-cell .num", this.pricelist).val(quantity);
 
         this.cartTotals();
@@ -535,7 +535,6 @@ define([
              *  impolode(',', $_POST['age_children']) in PHP
              *
              * max children: 4 @todo: configurabe
-             * @todo: keep values of yet insterted children ages
              * @type {any}
              */
             // $(".children_age_form", this.pricelist).each(function () {
@@ -612,7 +611,7 @@ define([
             lang = $('html').attr('lang');
 
             if (!lang.length) {
-                browserLocale = navigator.language || navigator.userLanguage;
+                var browserLocale = navigator.language || navigator.userLanguage;
                 lang = browserLocale.split('-')[0];
             }
         }
