@@ -1,51 +1,51 @@
 <form class="period children_age_form">
     <div class="row">
         <div class="col-sm-3">
-            <label>Arrivo:</label>
+            <label>{{_t 'datepicker.arrival'}}:</label>
             <div class="input-group date">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
-                <input placeholder="Arrivo" value="{{ from_ts }}" name="check_in" class="form-control checkin range" type="text" required/>
+                <input placeholder="{{_t 'datepicker.arrival'}}" value="{{ from_ts }}" name="check_in" class="form-control checkin range" type="text" required/>
             </div>
         </div>
 
         <div class="col-sm-3">
-            <label>Partenza:</label>
+            <label>{{_t 'datepicker.departure'}}:</label>
             <div class="input-group date">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
-                <input placeholder="Partenza" value="{{ to_ts }}" name="check_out" class="form-control checkout range" type="text" required/>
+                <input placeholder="{{_t 'datepicker.departure'}}" value="{{ to_ts }}" name="check_out" class="form-control checkout range" type="text" required/>
             </div>
         </div>
 
-        <div class="form-group hidden-xs hidden-sm col-sm-2">
-            <label>Adulti:</label>
+        <div class="form-group hidden-xs col-sm-2">
+            <label>{{_t 'datepicker.adults'}}:</label>
             <input type="number" name="adults" value="{{ adults }}" min="1" max="5" class="form-control" required/>
         </div>
 
-        <div class="form-group hidden-xs hidden-sm col-sm-2">
-            <label>Bambini:</label>
+        <div class="form-group hidden-xs col-sm-2">
+            <label>{{_t 'datepicker.children'}}:</label>
             <input type="number" name="children" value="{{ children }}" min="0" max="4" class="form-control child_num_input"/>
         </div>
 
         <div class="col-sm-2">
             <label>&nbsp;</label>
             <div class="form-group">
-                <input type="submit" class="btn btn-success btnSearch" value="Cerca"/>
+                <input type="submit" class="btn btn-success btnSearch" value="{{_t 'datepicker.search'}}"/>
             </div>
         </div>
 
         <div class="clearfix"></div>
 
-        <div class="hidden-xs" style="margin-top: 15px;">
+        <div class="hidden-xs p-b-10" style="margin-top: 15px;">
             <div class="col-sm-10">
                 <div class="row">
                     <div class="col-sm-3 pull-right display-none" id="child_ageClone">
                         <div class="form-group">
-                            <input type="number" placeholder="0" class="form-control" name="children_age[]" value="1" max="17" min="1" required disabled/>
-                            <label>Età Bambino <span class="jq_child_num">1</span></label>
+                            <label>{{_t 'datepicker.children_age'}} <span class="jq_child_num">1</span></label>
+                            <input type="number" placeholder="{{_t 'datepicker.children_age'}}" class="form-control" name="children_age[]" value="" max="17" min="1" required disabled/>
                         </div>
                     </div>
                 </div>

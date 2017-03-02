@@ -11,11 +11,11 @@
         </div>
     </li>
     {{else}}
-    <li class="list-group-item text-danger nothingMessage">Aggiungi servizi e accomadazioni dalla tabella</li>
+    <li class="list-group-item text-danger nothingMessage">{{_t 'modal.add services and accomodations from the table'}}</li>
     {{/each}}
     <div class="panel-footer">
         <div class="row">
-            <div class="col-sm-8">Totale:</div>
+            <div class="col-sm-8">{{_t 'cart.total'}}:</div>
             <div class="col-sm-4">€ {{ readable_grand_total }}</div>
 
             <input type="hidden" name="params[grand_total]" value="{{ grand_total }}"/>
