@@ -1,7 +1,7 @@
 <div class="withCartContainer">
     <div class="panel panel-info withCartBox">
         <div class="panel-heading text-center">
-            <h3>Riepilogo</h3>
+            <h3>{{_t 'cart.summary'}}</h3>
         </div>
 
         <div class="panel-body">
@@ -12,14 +12,14 @@
 
         <div class="panel-footer">
             <div class="row">
-                <div class="col-sm-6">
-                    <button type="button" data-toggle="modal" data-target="#withModal-{{ id }}" class="btn btn-warning pull-right cartEstimateBtn">
-                        Richiedi preventivo
+                <div class="col-sm-8">
+                    <button type="button" data-toggle="modal" data-target="#withModal-{{ slug }}" class="btn btn-warning cartEstimateBtn">
+                        {{_t 'cart.get quote'}}
                     </button>
                 </div>
 
-                <div class="col-sm-6 text-right cartTotal">
-                    <p>Tot: € <span class="pt-grand-total">0,00</span></p>
+                <div class="col-sm-4 text-right cartTotal">
+                    <p>{{_t 'cart.total'}}: € <span class="pt-grand-total">0,00</span></p>
                 </div>
             </div>
 

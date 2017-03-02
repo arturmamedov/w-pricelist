@@ -13,8 +13,10 @@ define([
     'text!templates/cart.html',
     'text!templates/cart_items.html',
     'text!templates/modal.html',
-    'text!templates/modal_items.html'
-], function ($, number, datepicker, handlebars, bootstrap, master_layout, cart_layout, cart_items_layout, modal_layout, modal_items_layout) {
+    'text!templates/modal_items.html',
+
+    'text!templates/I18n.json'
+], function ($, number, datepicker, handlebars, bootstrap, master_layout, cart_layout, cart_items_layout, modal_layout, modal_items_layout, I18n_json) {
     var withPricelist = function (pricelist) {
         // set pricelist element
         this.pricelist = pricelist;
@@ -54,8 +56,6 @@ define([
     // getPricelist: function (withData) {}, maybe with callback method showPricelist() ... but for the moment need ajax callback, success
 
     withPricelist.prototype.setPageData = function () {
-        console.info(this.pricelist);
-
         var pricelist_id,
             with_slug = this.pricelist.attr('data-with-slug'),
             with_id = this.pricelist.attr('data-with-id'),
@@ -126,10 +126,37 @@ define([
         this.clog(this.withData);
     };
 
-    withPricelist.prototype.initPricelist = function (pricelist) {
+    withPricelist.prototype.initPricelist = function () {
         this.setPageData();
-
         var _wp = this;
+
+        try {
+            I18n_json = $.parseJSON(I18n_json);
+        } catch (e) {
+            // yet json, keep calm
+        }
+        handlebars.registerHelper('_t',
+            function (str) {
+                var translated;
+
+                if (typeof I18n_json[_wp.getLanguage()] != 'undefined') {
+                    if (typeof I18n_json[_wp.getLanguage()][str] != 'undefined') {
+                        translated = I18n_json[_wp.getLanguage()][str];
+                    } else {
+                        translated = str.substr(str.indexOf('.') + 1);
+                        translated = translated.charAt(0).toUpperCase() + translated.slice(1);
+                        _wp.clog('Missed translate: ' + _wp.getLanguage() + ' - ' + str);
+                    }
+                } else {
+                    translated = str.substr(str.indexOf('.') + 1);
+                    translated = translated.charAt(0).toUpperCase() + translated.slice(1);
+                    _wp.clog('Missed language: ' + _wp.getLanguage() + ' - ' + str);
+                }
+
+                return translated;
+            }
+        );
+
         $.ajax({
             url: requirejs.toUrl('') + 'requests.php',
             method: 'GET',
