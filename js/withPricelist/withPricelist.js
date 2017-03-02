@@ -31,7 +31,7 @@ define([
     // current pricelist item
     withPricelist.prototype.pricelist = {};
     // debug for show log message
-    withPricelist.prototype.debug = true;
+    withPricelist.prototype.debug = false;
     // default language 'auto' (if it not set in html attr, or not found in browser = 'it')
     withPricelist.prototype.lang = 'auto';
     // data for perform request FORM data, and need to be shorter as possible
@@ -287,6 +287,7 @@ define([
             serializedData = serializedData + '&params[children_age]=' + this.withData.children_age.toString();
         }
 
+        var _wp = this;
         $.ajax({
             url: requirejs.toUrl('') + 'post_requests.php',
             method: 'POST',
@@ -297,23 +298,23 @@ define([
                     // GAT - ga('send', 'pageview', '/email-form-preventivo');
 
                     // remove loader
-                    this.pricelist.find(".btnModal").prop('disabled', false);
+                    _wp.pricelist.find(".btnModal").prop('disabled', false);
 
                     // success message
                     //this.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
 
-                    this.clog('5 - Modal Form Submitted');
+                    _wp.clog('5 - Modal Form Submitted');
                 } else {
                     // remove loader
-                    this.pricelist.find(".btnModal").prop('disabled', false);
+                    _wp.pricelist.find(".btnModal").prop('disabled', false);
 
                     // error message
-                    this.pricelist.find(".btnModal").after('<p class="text-danger text-center">' + json.message + ' <i class="glyphicon glyphicon-remove text-danger"></i></p>');
+                    _wp.pricelist.find(".btnModal").after('<p class="text-danger text-center">' + json.message + ' <i class="glyphicon glyphicon-remove text-danger"></i></p>');
                 }
             },
             error: function () {
                 // general error message
-                this.pricelist.find(".btnModal").after('<p class="text-danger text-center">Email error! Errore durante l\'invio, per favore riprova! <i class="glyphicon glyphicon-remove text-danger"></i></p>');
+                _wp.pricelist.find(".btnModal").after('<p class="text-danger text-center">Email error! Errore durante l\'invio, per favore riprova! <i class="glyphicon glyphicon-remove text-danger"></i></p>');
             }
         });
     };
@@ -327,6 +328,7 @@ define([
         $(".pt-grand-total-all-periods", this.pricelist).number(0, 2, ',', ' ').attr('data-amount', 0);
         var grand_total = 0;
 
+        var _wp = this;
         // pass trough all quantity of pricelist and add it to cart
         $(".pt-num-cell .num", this.pricelist).each(function () {
             // get num of services
@@ -336,25 +338,25 @@ define([
             // if quantity of service is greater then 0 add it!
             for (i = 1; i <= num; i++) {
                 var id = parseInt($(this).attr('data-id')),
-                    period_total = parseFloat($(".pt-total-all-periods-" + id, this.pricelist).attr('data-amount')),
-                    service_name = $(".pt-total-all-periods-" + id, this.pricelist).attr('data-service-name'),
+                    period_total = parseFloat($(".pt-total-all-periods-" + id, _wp.pricelist).attr('data-amount')),
+                    service_name = $(".pt-total-all-periods-" + id, _wp.pricelist).attr('data-service-name'),
                     apt = num * period_total, services_periods_total = apt || 0;
 
-                $(".pt-total-all-periods-" + id, this.pricelist).number(period_total, 2, ',', ' ');
-                var readable_period_total = $(".pt-total-all-periods-" + id, this.pricelist).text();
+                $(".pt-total-all-periods-" + id, _wp.pricelist).number(period_total, 2, ',', ' ');
+                var readable_period_total = $(".pt-total-all-periods-" + id, _wp.pricelist).text();
 
-                $(".pt-grand-total-all-periods-" + id, this.pricelist).number(services_periods_total, 2, ',', ' ').attr('data-amount', services_periods_total);
-                this.cartItems[id + '-' + i] = ({
+                $(".pt-grand-total-all-periods-" + id, _wp.pricelist).number(services_periods_total, 2, ',', ' ').attr('data-amount', services_periods_total);
+                _wp.cartItems[id + '-' + i] = ({
                     id: id,
                     num: i,
                     service_name: service_name,
                     period_total: period_total,
                     readable_period_total: readable_period_total
                 });
-                this.clog('3.3 - Aggiunto: ' + id + '/' + num + ' name: ' + service_name + ' price: ' + period_total);
+                _wp.clog('3.3 - Aggiunto: ' + id + '/' + num + ' name: ' + service_name + ' price: ' + period_total);
 
                 grand_total = grand_total + period_total;
-                this.clog('3.4 - Calcolo: ' + period_total + ' +');
+                _wp.clog('3.4 - Calcolo: ' + period_total + ' +');
             }
         });
         this.clog(this.cartItems);
@@ -402,6 +404,8 @@ define([
     };
 
     withPricelist.prototype.initCart = function () {
+        var _wp = this;
+
         // if (this.pricelist.find('.withCart').hasClass("cart_enabled")) {
         if (this.pricelist.hasClass("cart_enabled")) {
             // cart events yet enabled
@@ -409,11 +413,11 @@ define([
 
             $('.withCartBox', this.pricelist).affix({
                 offset: {
-                    top: $('.withCart', this.pricelist).offset().top,
-                    bottom: $(document).height() - this.pricelist.offset().top - this.pricelist.height()
+                    top: $('.withCart', _wp.pricelist).offset().top,
+                    bottom: $(document).height() - _wp.pricelist.offset().top - _wp.pricelist.height()
                 }
             }).css({
-                "width": $('.withCartBox', this.pricelist).outerWidth() + 'px'
+                "width": $('.withCartBox', _wp.pricelist).outerWidth() + 'px'
                 //, "left": $('.withCartBox', this.pricelist).offset().left
             });
         } else {
@@ -423,27 +427,27 @@ define([
 
             // Fire the calculation on change of num input
             this.pricelist.on('change', '.pt-num-cell input.num', function () {
-                this.cartTotals();
+                _wp.cartTotals();
             });
 
             // attach event on modal open
             // $(".modal", this.pricelist).on('show.bs.modal', function () {
             //     var modal_items_tpl = handlebars.compile(modal_items_layout);
-            //     $(this).find('.modal-list').html(modal_items_tpl(this.cartData));
+            //     $(this).find('.modal-list').html(modal_items_tpl(_wp.cartData));
             // });
 
             // attach event on modal form submit
             $(this.pricelist).on('submit', ".modal-form", function () {
-                this.submitModal($(this));
+                _wp.submitModal($(this));
                 return false;
             });
 
             this.pricelist.on('click', '.add-service', function () {
-                this.addToCart($(this).attr('data-service-id'));
+                _wp.addToCart($(this).attr('data-service-id'));
             });
 
             $(this.pricelist).on('click', '.withCartBox .remove', function () {
-                this.removeFromCart($(this).attr('data-service-index'), $(this).attr('data-service-id'));
+                _wp.removeFromCart($(this).attr('data-service-index'), $(this).attr('data-service-id'));
             });
         }
 
@@ -452,6 +456,8 @@ define([
     };
 
     withPricelist.prototype.initDatepicker = function () {
+        var _wp = this;
+
         if (this.pricelist.find('.period').hasClass("dp_enabled")) {
             // datapicker yet here
             this.clog('4.2 - Datapicker yet here');
@@ -498,14 +504,14 @@ define([
 
             bs_datepicker.on('submit', function (e) {
                 // GAT - ga('send', 'event', 'preventivo', 'calcola', 'sito-web', '5');
-                this.clog('4.3 - Datapicker send new request');
+                _wp.clog('4.3 - Datapicker send new request');
 
                 // update pricelist
-                this.updatePricelist();
+                _wp.updatePricelist();
 
                 // reset cart
-                this.cartItems = {};
-                this.updateCartItems();
+                _wp.cartItems = {};
+                _wp.updateCartItems();
                 return false;
             });
 
@@ -556,7 +562,7 @@ define([
             //             // change params
             //             childClone.attr('id', 'child_age_' + _cN);
             //             childClone.find('.jq_child_num').text(_cN);
-            //             childClone.find('input').prop("disabled", false).removeProp('disabled').val(parseInt(this.withData.children_age[_cN - 1]));
+            //             childClone.find('input').prop("disabled", false).removeProp('disabled').val(parseInt(_wp.withData.children_age[_cN - 1]));
             //
             //             // attach and show
             //             $('#child_ageClone', form).after(childClone);
@@ -579,7 +585,7 @@ define([
             //             // change params
             //             childClone.attr('id', 'child_age_' + _childNum);
             //             childClone.find('.jq_child_num').text(_childNum);
-            //             childClone.find('input').prop("disabled", false).removeProp('disabled').val(parseInt(this.withData.children_age[_childNum - 1]));
+            //             childClone.find('input').prop("disabled", false).removeProp('disabled').val(parseInt(_wp.withData.children_age[_childNum - 1]));
             //
             //             // attach and show
             //             $('#child_ageClone', form).after(childClone);
