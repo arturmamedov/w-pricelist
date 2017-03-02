@@ -301,7 +301,7 @@ define([
                     _wp.pricelist.find(".btnModal").prop('disabled', false);
 
                     // success message
-                    //this.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
+                    this.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
 
                     _wp.clog('5 - Modal Form Submitted');
                 } else {
