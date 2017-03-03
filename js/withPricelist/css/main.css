@@ -1,40 +1,150 @@
-.loader {
+/* OVERRIDE */
+/*.withPricelist .pt-adults-message {
+    display: none;
+}
+.withPricelist .pt-children-message {
+    display: none;
+}
+.withPricelist .one-adult-message {
+    display: none;
+}
+.withPricelist .btn-success  {
+    padding: 5px 20px;
+}
+.withPricelist .modal-dialog  {
+    margin: 120px auto;
+}
+/ * panel * /
+.withPricelist .panel-info > .panel-heading {
+    color: #FFFFFF;
+    background-color: #009DE0;
+    border-color: #009DE0;
+}
+.withPricelist .panel-info {
+    border-color: #009DE0;
+}
+
+/ * start BTN * /
+.withPricelist .cartEstimateBtn {
+    color: #ffffff;
+    background-color: #53B847;
+    border-color: #1E8213;
+}
+
+.withPricelist .cartEstimateBtn:focus,
+.withPricelist .cartEstimateBtn.focus {
+    color: #ffffff;
+    background-color: #53B847;
+    border-color: #1E8213;
+}
+
+.withPricelist .cartEstimateBtn:hover {
+    color: #ffffff;
+    background-color: #A7E6A0;
+    border-color: #1E8213;
+}
+
+.withPricelist .cartEstimateBtn:active,
+.withPricelist .cartEstimateBtn.active,
+.open > .dropdown-toggle.withPricelist .cartEstimateBtn {
+    color: #ffffff;
+    background-color: #A7E6A0;
+    border-color: #1E8213;
+}
+
+.withPricelist .cartEstimateBtn:active:hover,
+.withPricelist .cartEstimateBtn.active:hover,
+.open > .dropdown-toggle.withPricelist .cartEstimateBtn:hover,
+.withPricelist .cartEstimateBtn:active:focus,
+.withPricelist .cartEstimateBtn.active:focus,
+.open > .dropdown-toggle.withPricelist .cartEstimateBtn:focus,
+.withPricelist .cartEstimateBtn:active.focus,
+.withPricelist .cartEstimateBtn.active.focus,
+.open > .dropdown-toggle.withPricelist .cartEstimateBtn.focus {
+    color: #ffffff;
+    background-color: #A7E6A0;
+    border-color: #1E8213;
+}
+
+.withPricelist .cartEstimateBtn:active,
+.withPricelist .cartEstimateBtn.active,
+.open > .dropdown-toggle.withPricelist .cartEstimateBtn {
+    background-image: none;
+}
+
+.withPricelist .cartEstimateBtn.disabled:hover,
+.withPricelist .cartEstimateBtn[disabled]:hover,
+fieldset[disabled] .withPricelist .cartEstimateBtn:hover,
+.withPricelist .cartEstimateBtn.disabled:focus,
+.withPricelist .cartEstimateBtn[disabled]:focus,
+fieldset[disabled] .withPricelist .cartEstimateBtn:focus,
+.withPricelist .cartEstimateBtn.disabled.focus,
+.withPricelist .cartEstimateBtn[disabled].focus,
+fieldset[disabled] .withPricelist .cartEstimateBtn.focus {
+    background-color: #53B847;
+    border-color: #1E8213;
+}
+
+.withPricelist .cartEstimateBtn .badge {
+    color: #000000;
+    background-color: #53B847;
+}
+/ * end BTN * /
+*/
+
+.withPricelist table p {
+    margin-bottom: 0px;
+}
+
+.withPricelist .pt-nc-input-div {
+    padding: 0px !important;
+}
+
+.withPricelist .pt-nc-button-div {
+    padding: 5px 0 !important;
+}
+
+.withPricelist .cartTotal {
+    padding: 0 5px !important;
+}
+
+.withPricelist .pricelistTable {
+    margin-bottom: 20px;
+}
+
+.withPricelist .loader {
     padding: 10px;
     text-align: center;
 }
 
-.loader_table {
+.withPricelist .loader_table {
     padding: 20px;
 }
 
-.table_loader_center {
+.withPricelist .table_loader_center {
     text-align: center;
 }
 
-.affix-bottom {
+.withPricelist .affix-bottom {
     position: absolute;
 }
 
-.cart-service {
+.withPricelist .cart-service {
     position: relative;
 }
 
-.cart-service .remove {
+.withPricelist .cart-service .remove {
     position: absolute;
     top: 3px;
     right: 3px;
     cursor: pointer;
 }
 
-.form-group {
-    margin: 0px;
-}
-
-.add-service {
+.withPricelist .add-service {
     cursor: pointer;
 }
 
 /* Tools */
-.display-none {
+.withPricelist .display-none {
     display: none;
 }
