@@ -265,6 +265,9 @@ define([
         this.withAllData = $.extend(data, this.withData);
         this.pricelist.html(html_tpl(this.withAllData));
 
+        this.clog('#Pricelist rendered');
+        $('[data-toggle=tooltip]').tooltip();
+
         if (data.opt.opt_pricelist_search) {
             this.clog('2 - Pricelist search opt enabled');
             // if its a search request init Prices
