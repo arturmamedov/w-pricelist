@@ -23,7 +23,7 @@ define([
 
         // reset data
         this.withData = {};
-        this.withAllData = {};
+        this.withAllData = withPricelist.prototype.withAllData;
         this.cartData = {};
         this.cartItems = {};
     };
@@ -262,7 +262,7 @@ define([
         }
 
         // merge json returned 'data' with the form or page data that are used to init/update
-        this.withAllData = $.extend(data, this.withData);
+        this.withAllData = $.extend(data, this.withData, this.withAllData);
         this.pricelist.html(html_tpl(this.withAllData));
 
         this.clog('#Pricelist rendered');
@@ -298,6 +298,7 @@ define([
             data: serializedData,
             success: function (json) {
                 if (json.success) {
+                    // if(typeof ga != 'undefined') { ... console.info('no ga'); }
                     // GAT - ga('send', 'pageview', '/email-form-preventivo');
 
                     // remove loader
