@@ -262,7 +262,11 @@ define([
         }
 
         // merge json returned 'data' with the form or page data that are used to init/update
-        this.withAllData = $.extend(data, this.withData, this.withAllData);
+        // @todo: create a good white list maybe by define all data that i have yet defined here and that i can receive from server
+        var whiteListAllData = {
+            urls: this.withAllData.urls
+        };
+        this.withAllData = $.extend(data, this.withData, whiteListAllData);
         this.pricelist.html(html_tpl(this.withAllData));
 
         this.clog('#Pricelist rendered');
