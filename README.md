@@ -9,6 +9,14 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
 
 ### Installation
 
+0 - Run `bower install` for install all components in
+ `/js/withPricelist`
+ 
+```
+// it install
+// bootstrap, bootstrap-datepicker, handlebars, jsquery, jquery-number, requirejs, text
+```
+ 
 1 - Include this js snippet on your page
  ```
  <script src="js/withPricelist/bower_components/requirejs/require.js" 
