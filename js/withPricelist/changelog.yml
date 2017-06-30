@@ -1,0 +1,8 @@
+url: https://bitbucket.org/teambuonsito/api-withpricelist
+versions:
+    "1.1.0":
+        added:
+            - Added i18n for translate handlebars template, withPricelist.js strings and send localized requests
+    "1.0.0":
+        added:
+            - Basic functionality, see README for understand, and commit history if you a frgeek
