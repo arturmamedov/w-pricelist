@@ -142,6 +142,9 @@ class MyApi
             //    }
         }
 
+        // clean endpoint from special chars how a space in example that can broke curl call
+        $endpoint = rawurlencode($endpoint);
+
         // make a request without version if options no_version set to true
         if (isset($options['no_version']) && $options['no_version']) {
             $url = $this->host.$endpoint;
