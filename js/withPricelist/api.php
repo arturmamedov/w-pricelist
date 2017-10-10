@@ -142,7 +142,12 @@ class MyApi
             //    }
         }
 
-        $url = $this->host.$this->version.$endpoint;
+        // make a request without version if options no_version set to true
+        if (isset($options['no_version']) && $options['no_version']) {
+            $url = $this->host.$endpoint;
+        } else {
+            $url = $this->host.'/'.$this->version.$endpoint;
+        }
 
         curl_setopt($ci, CURLOPT_URL, $url);
         $response = curl_exec($ci);
