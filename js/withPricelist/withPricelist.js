@@ -322,7 +322,7 @@ define([
             },
             error: function () {
                 // general error message
-                _wp.pricelist.find(".btnModal").after('<p class="text-danger text-center">Email error! Errore durante l\'invio, per favore riprova! <i class="glyphicon glyphicon-remove text-danger"></i></p>');
+                _wp.pricelist.find(".btnModal").prop('disabled', false).after('<p class="text-danger text-center">Email error! Errore durante l\'invio, per favore riprova! <i class="glyphicon glyphicon-remove text-danger"></i></p>');
             }
         });
     };
@@ -511,6 +511,7 @@ define([
                 });
 
             bs_datepicker.on('submit', function (e) {
+                // if(typeof ga != 'undefined') {
                 // GAT - ga('send', 'event', 'preventivo', 'calcola', 'sito-web', '5');
                 _wp.clog('4.3 - Datapicker send new request');
 

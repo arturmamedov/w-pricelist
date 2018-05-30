@@ -2,7 +2,7 @@
  
 Javascript module for work with Pricelists API
  
-http://pricelist.buonsito.net/ 
+https://insuperadmin.buonsito.net/ 
 
 __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
 
@@ -14,10 +14,11 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
  
 ```
 // it install
-// bootstrap, bootstrap-datepicker, handlebars, jsquery, jquery-number, requirejs, text
+// bootstrap, bootstrap-datepicker, handlebars, jquery, jquery-number, requirejs, text
 ```
  
-1 - Include this js snippet on your page
+1 - Include this js snippet on your page 
+
  ```
  <script src="js/withPricelist/bower_components/requirejs/require.js" 
  data-main="/js/withPricelist/main.js"></script>
@@ -26,6 +27,7 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
  
  `data-main` is the location of main.js script that init the modules
 
+`!important` AT THE END, AFTER AL OTHER JAVASCRIPT's cause require.js duplicate some js
 
 ### Usage
 Before you start you need to create a pricelist and generate an access token on http://pricelist.buonsito.net/

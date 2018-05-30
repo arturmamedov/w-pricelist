@@ -24,7 +24,7 @@ class MyApi
     /**
      * Set up the API root URL.
      */
-    public $host = "http://pricelist.buonsito.net/api";
+    public $host = "https://insuperadmin.buonsito.net/api";
 
     /**
      * Set up the API version
@@ -127,6 +127,7 @@ class MyApi
         //curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
         curl_setopt($ci, CURLOPT_HEADERFUNCTION, [ $this, 'getHeader' ]);
         curl_setopt($ci, CURLOPT_HEADER, false);
+        curl_setopt($ci, CURLOPT_FOLLOWLOCATION, true);
 
         switch ($method) {
             case 'POST':
@@ -143,13 +144,13 @@ class MyApi
         }
 
         // clean endpoint from special chars how a space in example that can broke curl call
-        $endpoint = rawurlencode($endpoint);
+        //$endpoint = rawurlencode($endpoint);
 
         // make a request without version if options no_version set to true
         if (isset($options['no_version']) && $options['no_version']) {
             $url = $this->host.$endpoint;
         } else {
-            $url = $this->host.'/'.$this->version.$endpoint;
+            $url = $this->host.$this->version.$endpoint;
         }
 
         curl_setopt($ci, CURLOPT_URL, $url);

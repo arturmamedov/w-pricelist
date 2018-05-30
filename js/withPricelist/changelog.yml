@@ -1,5 +1,13 @@
 url: https://bitbucket.org/teambuonsito/api-withpricelist
 versions:
+    "1.1.1":
+        modified:
+            - API domain to Insuperadmin
+            - rawurlencode on id's and not on entire endpoint
+        added:
+            - No version option
+            - FOLLOW_LOCATION for Curl
+            - General Error for js ajax
     "1.1.0":
         added:
             - Added i18n for translate handlebars template, withPricelist.js strings and send localized requests
