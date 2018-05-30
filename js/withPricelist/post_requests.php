@@ -1,5 +1,5 @@
 <?php
-$id = $_POST['id'];
+$id = rawurlencode($_POST['id']);
 $lang = (isset($_POST['lang'])) ? $_POST['lang'] : 'it';
 
 // endpoint for only show table (changed if isset(check_in/out) below)
