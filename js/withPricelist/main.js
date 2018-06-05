@@ -15,7 +15,7 @@ requirejs.config({
 });
 var withBaseUrl = requirejs.toUrl(''),
     requirecss = [
-        withBaseUrl + 'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        withBaseUrl + 'bower_components/bootstrap/dist/css/bootstrap.min.css', // @todo: split into dependencies that are used here
         withBaseUrl + 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
         withBaseUrl + 'css/main.css'
     ];
