@@ -148,3 +148,7 @@ fieldset[disabled] .withPricelist .cartEstimateBtn.focus {
 .withPricelist .display-none {
     display: none;
 }
+/* x-editable v1.5.1 BugFix https://github.com/vitalets/x-editable/issues/ 1033 & 1066 */
+.datepicker > div {
+    display: inherit;
+}
