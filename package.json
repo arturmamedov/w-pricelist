@@ -1,0 +1,29 @@
+{
+  "name": "withapi-withpricelist",
+  "version": "1.2.0",
+  "description": "JS for work with Pricelist API for show it and search",
+  "main": "js/withPricelist/main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-purifycss": "^0.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ambuonsito@bitbucket.org/teambuonsito/api-withpricelist.git"
+  },
+  "keywords": [
+    "pricelist",
+    "api"
+  ],
+  "author": "Artur Mamedov <arturmamedov1993@gmail.com>",
+  "license": "0BSD",
+  "homepage": "https://bitbucket.org/teambuonsito/api-withpricelist#readme"
+}
