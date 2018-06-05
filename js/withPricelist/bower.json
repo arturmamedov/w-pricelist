@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "requirejs": "latest",
-    "bootstrap": "latest",
+    "bootstrap": "3.3.7",
     "bootstrap-datepicker": "latest",
     "jquery-number": "latest",
     "handlebars": "^4.0.5",
