@@ -78,9 +78,17 @@
                         <button type="submit" class="btn btn-success btnModal noBeforeUnload">
                             <i class="glyphicon glyphicon-envelope"></i> &nbsp; {{_t 'modal.send email'}}
                         </button>
-                        <span class="help-block">{{_t 'modal.by sending emails, you accept and agree to our'}} <a href="{{ urls.privacy }}" target="_blank">{{_t 'modal.privacy policy'}}</a></span>
+
+                        <label class="checkbox">
+                            <input type="checkbox" required name="privacy" id="privacy"/> &nbsp;
+                            {{_t 'modal.by sending emails, you accept and agree to our'}}
+                            <a href="{{ urls.privacy }}" target="_blank">{{_t 'modal.privacy policy'}}</a>
+                        </label>
                     </div>
                 </form>
+
+                <div class="alert alert-success display-none success-message"></div>
+                <div class="alert alert-danger display-none errors-message"></div>
             </div>
 
             <!--
