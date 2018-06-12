@@ -1,5 +1,20 @@
 url: https://bitbucket.org/teambuonsito/api-withpricelist
 versions:
+    "1.4.0":
+        added:
+            - New I18n method `this.trans(str)` and messages
+        modified:
+            - (fix) Datepicker localization now (it, en, fr, de, pl, nl) work fine. And datepicker highlighted day
+    "1.3.0":
+        added:
+            - Added Grunt for minimize and prepare all CSS for production in one minimized file
+            - `withPricelist.min.css` (bootsratp, datepicker, main), `main.min.css`, `listTb.min.css`, `listTb_main.min.css` (listTb, main), and copy fonts foldr for have glyphicon in bootstrap
+    "1.2.0":
+        added:
+            - Added requireJs optimizer for create js build `r.js.cmd -o app.build.js`, for install `npm install -g requirejs`
+        modified:
+            - (fix) Bootstrap version to v3.3.7
+            - (fix) Datepicker broke for a x-editable rule
     "1.1.1":
         modified:
             - API domain to Insuperadmin
