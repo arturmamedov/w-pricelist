@@ -152,3 +152,16 @@ fieldset[disabled] .withPricelist .cartEstimateBtn.focus {
 .datepicker > div {
     display: inherit;
 }
+/* OVERRIDE bootstrap-datepicker for have red highlighted days(sunday) and not break on selected highlighted day */
+.datepicker table tr td.highlighted {
+    background: transparent !important;
+    border: none !important;
+    color: #FF0000 !important;
+}
+.datepicker table tr td.selected.highlighted,
+.datepicker table tr td.active.highlighted.active,
+.datepicker table tr td.active.highlighted:active {
+    color: #FFFFFF !important;
+    background-color: #286090 !important;
+    border-radius: 5px;
+}
