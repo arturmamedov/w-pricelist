@@ -137,23 +137,7 @@ define([
         }
         handlebars.registerHelper('_t',
             function (str) {
-                var translated;
-
-                if (typeof I18n_json[_wp.getLanguage()] != 'undefined') {
-                    if (typeof I18n_json[_wp.getLanguage()][str] != 'undefined') {
-                        translated = I18n_json[_wp.getLanguage()][str];
-                    } else {
-                        translated = str.substr(str.indexOf('.') + 1);
-                        translated = translated.charAt(0).toUpperCase() + translated.slice(1);
-                        _wp.clog('Missed translate: ' + _wp.getLanguage() + ' - ' + str);
-                    }
-                } else {
-                    translated = str.substr(str.indexOf('.') + 1);
-                    translated = translated.charAt(0).toUpperCase() + translated.slice(1);
-                    _wp.clog('Missed language: ' + _wp.getLanguage() + ' - ' + str);
-                }
-
-                return translated;
+                return _wp.trans(str);
             }
         );
 
@@ -183,7 +167,7 @@ define([
                 }
             },
             error: function () {
-                _wp.pricelist.html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
+                _wp.pricelist.html('<span class="help-block alert alert-danger">' + _wp.trans('pricelist.render error') + '</span>');
             }
         });
     };
@@ -230,7 +214,7 @@ define([
                 // remove loader
                 _wp.pricelist.find(".btnSearch").prop('disabled', false);
 
-                _wp.pricelist.find('.pricelistTable').html('<span class="help-block alert alert-danger">Pricelist Error! Errore durante la generazione del listino prezzi :(</span>');
+                _wp.pricelist.find('.pricelistTable').html('<span class="help-block alert alert-danger">' + _wp.trans('pricelist.render error') + '</span>');
             }
         });
     };
@@ -288,6 +272,9 @@ define([
     withPricelist.prototype.submitModal = function (modalForm) {
         // add loader
         this.pricelist.find(".btnModal").prop('disabled', true);
+        // hide message's
+        this.pricelist.find(".success-message").hide();
+        this.pricelist.find(".errors-message").hide();
 
         var serializedData = modalForm.serialize();
         if (typeof this.withData.children_age != 'undefined' && this.withData.children_age.length > 0) {
@@ -309,7 +296,10 @@ define([
                     _wp.pricelist.find(".btnModal").prop('disabled', false);
 
                     // success message
-                    _wp.pricelist.find(".modal-body").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>');
+                    _wp.pricelist.find(".success-message").html('<h3 class="text-success text-center">' + json.message + '</h3><h1 class="text-center"><i class="glyphicon glyphicon-ok text-success"></i></h1>').show();
+
+                    // reset form
+                    _wp.pricelist.find(".modal-form").html('<h5 class="text-center">' + _wp.trans('modal.for another quote') + '</h5>');
 
                     _wp.clog('5 - Modal Form Submitted');
                 } else {
@@ -317,12 +307,15 @@ define([
                     _wp.pricelist.find(".btnModal").prop('disabled', false);
 
                     // error message
-                    _wp.pricelist.find(".btnModal").after('<p class="text-danger text-center">' + json.message + ' <i class="glyphicon glyphicon-remove text-danger"></i></p>');
+                    _wp.pricelist.find(".errors-message").html('<p class="text-danger text-center">' + json.message + ' <i class="glyphicon glyphicon-remove text-danger"></i></p>').show();
                 }
             },
             error: function () {
+                // remove loader
+                _wp.pricelist.find(".btnModal").prop('disabled', false);
+
                 // general error message
-                _wp.pricelist.find(".btnModal").prop('disabled', false).after('<p class="text-danger text-center">Email error! Errore durante l\'invio, per favore riprova! <i class="glyphicon glyphicon-remove text-danger"></i></p>');
+                _wp.pricelist.find(".errors-message").html('<p class="text-danger text-center">' + _wp.trans('modal.send error') + ' <i class="glyphicon glyphicon-remove text-danger"></i></p>').show();
             }
         });
     };
@@ -419,7 +412,7 @@ define([
             // cart events yet enabled
             this.clog('3.2 - Cart yet here');
 
-            $('.withCartBox', this.pricelist).affix({
+            /* @bugged $('.withCartBox', this.pricelist).affix({
                 offset: {
                     top: $('.withCart', _wp.pricelist).offset().top,
                     bottom: $(document).height() - _wp.pricelist.offset().top - _wp.pricelist.height()
@@ -427,7 +420,7 @@ define([
             }).css({
                 "width": $('.withCartBox', _wp.pricelist).outerWidth() + 'px'
                 //, "left": $('.withCartBox', this.pricelist).offset().left
-            });
+            });*/
         } else {
             // this.pricelist.find('.withCart').addClass('cart_enabled');
             this.pricelist.addClass('cart_enabled');
@@ -457,6 +450,16 @@ define([
             $(this.pricelist).on('click', '.withCartBox .remove', function () {
                 _wp.removeFromCart($(this).attr('data-service-index'), $(this).attr('data-service-id'));
             });
+
+            /* @bugged $('.withCartBox', this.pricelist).affix({
+                offset: {
+                    top: $('.withCart', _wp.pricelist).offset().top,
+                    bottom: $(document).height() - _wp.pricelist.offset().top - _wp.pricelist.height()
+                }
+            }).css({
+                "width": $('.withCartBox', _wp.pricelist).outerWidth() + 'px'
+                //, "left": $('.withCartBox', this.pricelist).offset().left
+            });*/
         }
 
         // if isset yet something in input num get the total immediately
@@ -482,12 +485,85 @@ define([
             if (typeof bsdp_lang_code == 'undefined' || bsdp_lang_code.length == 0) {
                 bsdp_lang_code = $("html").attr('lang');
             }
-            if (typeof bsdp_lang_code == 'undefined' || bsdp_lang_code.length == 0) {
+            if (typeof bsdp_lang_code == 'undefined' || bsdp_lang_code.length == 0 || bsdp_lang_code == 'en') {
                 bsdp_lang_code = 'en-GB';
             }
 
             if (date.getTime() > start_date.getTime()) {
                 start_date = date;
+            }
+
+            // # locales
+            switch (bsdp_lang_code) {
+                case'it':
+                    $.fn.datepicker.dates['it'] = {
+                        days: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"],
+                        daysShort: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+                        daysMin: ["Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa"],
+                        months: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+                        monthsShort: ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+                        today: "Oggi",
+                        monthsTitle: "Mesi",
+                        clear: "Cancella",
+                        weekStart: 1,
+                        format: "dd/mm/yyyy"
+                    };
+                    break;
+                case'fr':
+                    $.fn.datepicker.dates['fr'] = {
+                        days: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"],
+                        daysShort: ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
+                        daysMin: ["d", "l", "ma", "me", "j", "v", "s"],
+                        months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+                        monthsShort: ["janv.", "févr.", "mars", "avril", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."],
+                        today: "Aujourd'hui",
+                        monthsTitle: "Mois",
+                        clear: "Effacer",
+                        weekStart: 1,
+                        format: "dd/mm/yyyy"
+                    };
+                    break;
+                case'de':
+                    $.fn.datepicker.dates['de'] = {
+                        days: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                        daysShort: ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
+                        daysMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                        months: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                        monthsShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                        today: "Heute",
+                        monthsTitle: "Monate",
+                        clear: "Löschen",
+                        weekStart: 1,
+                        format: "dd.mm.yyyy"
+                    };
+                    break;
+                case'pl':
+                    $.fn.datepicker.dates['pl'] = {
+                        days: ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"],
+                        daysShort: ["niedz.", "pon.", "wt.", "śr.", "czw.", "piąt.", "sob."],
+                        daysMin: ["ndz.", "pn.", "wt.", "śr.", "czw.", "pt.", "sob."],
+                        months: ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"],
+                        monthsShort: ["sty.", "lut.", "mar.", "kwi.", "maj", "cze.", "lip.", "sie.", "wrz.", "paź.", "lis.", "gru."],
+                        today: "dzisiaj",
+                        weekStart: 1,
+                        clear: "wyczyść",
+                        format: "dd.mm.yyyy"
+                    };
+                    break;
+                case'nl':
+                    $.fn.datepicker.dates['nl'] = {
+                        days: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
+                        daysShort: ["zo", "ma", "di", "wo", "do", "vr", "za"],
+                        daysMin: ["zo", "ma", "di", "wo", "do", "vr", "za"],
+                        months: ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"],
+                        monthsShort: ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"],
+                        today: "Vandaag",
+                        monthsTitle: "Maanden",
+                        clear: "Wissen",
+                        weekStart: 1,
+                        format: "dd-mm-yyyy"
+                    };
+                    break;
             }
 
             // date picker
@@ -558,7 +634,7 @@ define([
             //         }
             //         // over 4 chlids are invalid
             //         if (_childNum > 4) {
-            //             $('body').gdivMessage('No more then 4 childs / Non più di 4 bambini', 'warning', {hidetime: 7000});
+            //             $('body').gdivMessage(this.trans('datepicker.no more children'), 'warning', {hidetime: 7000});
             //             $('.child_num_input', form).val(4);
             //             return false;
             //         }
@@ -642,6 +718,31 @@ define([
         } else {
             return this.setLanguage('auto');
         }
+    };
+
+    /**
+     * Method for translate strings in the current selected this.lang or fallback or return the passed str without context prefix
+     * @param string str
+     * @returns string Translated str
+     */
+    withPricelist.prototype.trans = function (str) {
+        var translated, lang_code = this.getLanguage();
+
+        if (typeof I18n_json[lang_code] != 'undefined') {
+            if (typeof I18n_json[lang_code][str] != 'undefined') {
+                translated = I18n_json[lang_code][str];
+            } else {
+                translated = str.substr(str.indexOf('.') + 1);
+                translated = translated.charAt(0).toUpperCase() + translated.slice(1);
+                console.error('Missed translate: ' + lang_code + ' - for: ' + str);
+            }
+        } else {
+            translated = str.substr(str.indexOf('.') + 1);
+            translated = translated.charAt(0).toUpperCase() + translated.slice(1);
+            console.error('Missed entire language: ' + lang_code + ' - when translating: ' + str);
+        }
+
+        return translated;
     };
 
     return withPricelist;
