@@ -1,4 +1,4 @@
-/* OVERRIDE */
+/* OVERRIDE for hide some information on table (used in Gestione Campeggi cause need  more simple table) */
 /*.withPricelist .pt-adults-message {
     display: none;
 }
@@ -24,7 +24,7 @@
     border-color: #009DE0;
 }
 
-/ * start BTN * /
+/ * start BTN change colors (and adjust .btn on Gestione Campeggio) * /
 .withPricelist .cartEstimateBtn {
     color: #ffffff;
     background-color: #53B847;

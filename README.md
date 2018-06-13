@@ -1,4 +1,4 @@
-# #withPricelist JS API v1.3.0
+# #withPricelist JS API v1.4.x
  
 Javascript module for work with Pricelists API
  
@@ -52,7 +52,7 @@ Thats all! Enjoy :)
 ## Properties
 ```
 // debug for show log message
-debug: true,
+debug: false,
 // default language 'auto' (if it not set in html attr, or not found in browser = 'it')
 lang: 'auto',
 // current pricelist item
@@ -130,6 +130,9 @@ Submit the modal form with email, name, message, check_in/out, params of search 
 
 #### setLanguage() / getLanguage()
 Setter and getter for pricelist language, the get method will call setLanguage() if no language set. Language are kept from pricelist js settings passed on init, or from html lang attribute.
+
+#### trans(str)
+Translated strings from I18n.json file or return a fallback or same string with cut contenxt prefix
 
 #### clog()
 Debug method that show progress of app execution, if debug enabled, you can place it for debug or use console.info() directly.
