@@ -21,13 +21,13 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
 
  ```
  <script src="js/withPricelist/bower_components/requirejs/require.js" 
- data-main="/js/withPricelist/main.js"></script>
+ data-main="/js/withPricelist/withPricelist.min.js"></script>
  ```
  `src` is the main require.js file, change folder to your
  
- `data-main` is the location of main.js script that init the modules
+ `data-main` is the location of build and minified script that contain and init the modules
 
-`!important` AT THE END, AFTER AL OTHER JAVASCRIPT's cause require.js duplicate some js
+`!important` AT THE END, AFTER AL OTHER JAVASCRIPT's cause require.js can duplicate some js
 
 ### Usage
 Before you start you need to create a pricelist and generate an access token on http://pricelist.buonsito.net/
