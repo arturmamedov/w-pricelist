@@ -1,7 +1,7 @@
 <?php
 /**
  * withApi API Class
- * @version 1.0.0
+ * @version 1.0.1
  * @author  Artur Mamedov <arturmamedov1993@gmail.com>
  */
 
@@ -90,6 +90,11 @@ class MyApi
     function __construct($consumer_name = 'Bearer', $consumer_password)
     {
         $this->auth = 'Authorization: '.$consumer_name.' '.$consumer_password;
+
+        // if host not set, set it with the self http host
+        if (empty($this->host)) {
+            $this->host = $_SERVER['HTTP_HOST'].'/api';
+        }
     }
 
 
