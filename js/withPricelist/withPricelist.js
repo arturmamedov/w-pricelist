@@ -92,6 +92,15 @@ define([
         this.withData.children = (typeof with_children == "undefined" || with_children.length == 0) ? 0 : with_children;
         this.withData.children_age = (typeof with_children_age == "undefined" || with_children_age.length == 0) ? [] : with_children_age.split(',');
 
+        // set custom access token if isset in url (for preview in the pricelistCMS)
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        if (url.searchParams.has("access_token")) {
+            this.withData.access_token = url.searchParams.get("access_token");
+            this.clog('setCustomAccessToken');
+            this.clog(this.withData.access_token);
+        }
+
         this.clog('setPageData');
         this.clog(this.withData);
     };
