@@ -289,6 +289,14 @@ define([
         if (typeof this.withData.children_age != 'undefined' && this.withData.children_age.length > 0) {
             serializedData = serializedData + '&params[children_age]=' + this.withData.children_age.toString();
         }
+        // Add js_referral to mail - depends on https://github.com/arturmamedov/utm_referral-cookie
+        if (typeof cookieToString != 'undefined' && typeof cookieToString('js_referral') != 'undefined') {
+            var js_referral_returned = '';
+            if (typeof cookieToString('js_referral_returned') != 'undefined') {
+                js_referral_returned = ' - Referral 2: ' + cookieToString('js_referral_returned');
+            }
+            serializedData = serializedData + '&params[ga_refferer]=' + cookieToString('js_referral') + js_referral_returned;
+        }
 
         var _wp = this;
         $.ajax({
