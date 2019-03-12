@@ -23,9 +23,9 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
  <script src="js/withPricelist/bower_components/requirejs/require.js" 
  data-main="/js/withPricelist/withPricelist.min.js"></script>
  ```
- `src` is the main require.js file, change folder to your
+`src` is the main require.js file, change folder to your
  
- `data-main` is the location of build and minified script that contain and init the modules
+`data-main` is the location of build and minified script that contain and init the modules
 
 `!important` AT THE END, AFTER AL OTHER JAVASCRIPT's cause require.js can duplicate some js
 
@@ -159,3 +159,12 @@ if (data.opt.opt_pricelist_search) {
 For last edit the `master.layout` and instead of integrated `{{{ html.datepicker }}}` insert the partials `{{> withDatepicker }}`
 
 After if you wont to add other datepicker then the uxsolution/bootstrap-datepicker use the requirejs shim config, and work on initDatepicker() method.
+
+---
+
+### Build (for custom build)
+Maybe you decide to remove some packages from main.js (in example bootstrap.js that are yet included in most sites)
+
+JS - Build with requirejs: `r.js.cmd -o app.build.js`
+
+CSS - Build with Grunt: `grunt`
