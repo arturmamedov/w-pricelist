@@ -11,7 +11,8 @@
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-purifycss": "^0.1.2"
+    "grunt-purifycss": "^0.1.2",
+    "requirejs": "^2.3.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
