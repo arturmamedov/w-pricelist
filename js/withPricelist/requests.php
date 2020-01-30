@@ -2,6 +2,7 @@
 $id = rawurlencode($_GET['id']);
 $lang = (isset($_GET['lang'])) ? $_GET['lang'] : 'it';
 
+// # GET #
 // endpoint for only show table (changed if isset(check_in/out) below)
 $endpoint = "pricelist/pricelist/table/{$id}";
 $method = 'GET';
@@ -9,12 +10,16 @@ $method = 'GET';
 // array with params to send
 $params = [ 'lang' => $lang ];
 
-if (isset($_GET['check_inout'])) {
+// if only_services is passed so add it to GET endpoint, otherwise it yet passed in $_GET array
+if (isset($_GET['only_services']) && strlen($_GET['only_services'])) {
+    $endpoint .= "?only_services={$_GET['only_services']}";
+}
 
+// # POST #
+if (isset($_GET['check_inout'])) {
     $endpoint = "pricelist/pricelist/table/search/{$id}";
     $method = 'POST';
 } elseif (isset($_GET['check_in']) && isset($_GET['check_out'])) {
-
     $endpoint = "pricelist/pricelist/table/search/{$id}";
     $method = 'POST';
 }

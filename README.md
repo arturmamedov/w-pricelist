@@ -23,9 +23,9 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
  <script src="js/withPricelist/bower_components/requirejs/require.js" 
  data-main="/js/withPricelist/withPricelist.min.js"></script>
  ```
-`src` is the main require.js file, change folder to your
+ `src` is the main require.js file, change folder to your
  
-`data-main` is the location of build and minified script that contain and init the modules
+ `data-main` is the location of build and minified script that contain and init the modules
 
 `!important` AT THE END, AFTER AL OTHER JAVASCRIPT's cause require.js can duplicate some js
 
@@ -139,6 +139,7 @@ Debug method that show progress of app execution, if debug enabled, you can plac
 
 ## Events
 
+// @todo ...
 
 ## Custom Datepicker
 
@@ -160,11 +161,29 @@ For last edit the `master.layout` and instead of integrated `{{{ html.datepicker
 
 After if you wont to add other datepicker then the uxsolution/bootstrap-datepicker use the requirejs shim config, and work on initDatepicker() method.
 
----
 
-### Build (for custom build)
-Maybe you decide to remove some packages from main.js (in example bootstrap.js that are yet included in most sites)
+### Build
+You can rebuild Javascripts with RequireJS optimizer
 
-JS - Build with requirejs: `r.js.cmd -o app.build.js`
+```
+// install it in root folder 
+npm install -g requirejs
 
-CSS - Build with Grunt: `grunt`
+// and use requireJs optimizer for create js build 
+r.js.cmd -o app.build.js
+```
+
+### Debug 
+For see debug information during development, include a main.js script and enable debug in non miniefied version
+
+```html
+<script src="js/withPricelist/bower_components/requirejs/require.js" 
+data-main="/js/withPricelist/main.js"></script>
+
+
+// ... inside withPricelist.js
+
+// debug for show log message
+withPricelist.prototype.debug = true;
+
+```

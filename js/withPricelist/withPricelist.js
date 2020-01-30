@@ -61,7 +61,8 @@ define([
             with_id = this.pricelist.attr('data-with-id'),
             with_checkinout = this.pricelist.attr('data-checkinout'),
             with_check_in = this.pricelist.attr('data-checkin'),
-            with_check_out = this.pricelist.attr('data-checkout');
+            with_check_out = this.pricelist.attr('data-checkout'),
+            with_only_services = this.pricelist.attr('data-show-only-services');
 
         // lang of request
         this.withData.lang = this.getLanguage();
@@ -74,13 +75,21 @@ define([
         }
         this.withData.id = pricelist_id;
 
+        // if data-show-only-services send request for retrive only that services
+        if (typeof with_only_services !== 'undefined') {
+            this.withData.only_services = with_only_services;
+            this.clog('0.1 - Data Show Only Services: ' + with_only_services);
+        }
+
         // if isset check_in/out
         if (typeof with_check_in != 'undefined' && with_check_in.length > 0 && typeof with_check_out != 'undefined' && with_check_out.length > 0) {
             this.withData.check_in = with_check_in;
             this.withData.check_out = with_check_out;
+            this.clog('0.2 - Set CheckIn - Out: ' + with_check_in + ' - ' + with_check_out);
         }
         else if (typeof with_checkinout != 'undefined' && with_checkinout.length > 0) {
             this.withData.check_inout = with_checkinout;
+            this.clog('0.2 - Set CheckInOut: ' + with_checkinout);
         }
 
         // adults, children, children_age on pricelist data
@@ -97,11 +106,11 @@ define([
         var url = new URL(url_string);
         if (url.searchParams.has("access_token")) {
             this.withData.access_token = url.searchParams.get("access_token");
-            this.clog('setCustomAccessToken');
+            this.clog('0 - setCustomAccessToken');
             this.clog(this.withData.access_token);
         }
 
-        this.clog('setPageData');
+        this.clog('0.9 - setPageData');
         this.clog(this.withData);
     };
 
