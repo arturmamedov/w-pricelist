@@ -61,8 +61,7 @@ define([
             with_id = this.pricelist.attr('data-with-id'),
             with_checkinout = this.pricelist.attr('data-checkinout'),
             with_check_in = this.pricelist.attr('data-checkin'),
-            with_check_out = this.pricelist.attr('data-checkout'),
-            with_only_services = this.pricelist.attr('data-show-only-services');
+            with_check_out = this.pricelist.attr('data-checkout');
 
         // lang of request
         this.withData.lang = this.getLanguage();
@@ -75,10 +74,10 @@ define([
         }
         this.withData.id = pricelist_id;
 
-        // if data-show-only-services send request for retrive only that services
-        if (typeof with_only_services !== 'undefined') {
-            this.withData.only_services = with_only_services;
-            this.clog('0.1 - Data Show Only Services: ' + with_only_services);
+        // if data-with-services send request for retrieve only that services
+        if (typeof this.pricelist.attr('data-with-services') !== 'undefined') {
+            this.withData.only_services = this.pricelist.attr('data-with-services');
+            this.clog('0.1 - Data Show Only Services: ' + this.withData.only_services);
         }
 
         // if isset check_in/out
@@ -108,6 +107,14 @@ define([
             this.withData.access_token = url.searchParams.get("access_token");
             this.clog('0 - setCustomAccessToken');
             this.clog(this.withData.access_token);
+        }
+
+        // if data-with-description="false" disable description of pricelist, this override settings in CMS
+        if (typeof this.pricelist.attr('data-with-description') !== 'undefined') {
+            if (this.pricelist.attr('data-with-description') == "false" || this.pricelist.attr('data-with-description') == false) {
+                this.withData.opt = {opt_pricelist_description: false};
+                this.clog('0.3 - This Pricelist Disable Description!');
+            }
         }
 
         this.clog('0.9 - setPageData');
