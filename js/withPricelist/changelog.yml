@@ -1,8 +1,9 @@
 url: https://bitbucket.org/teambuonsito/api-withpricelist
 versions:
-    "1.4.5":
+    "1.4.6":
         added:
-            - data-show-only-services that send only services to API enpoint and get Pricelist only with that services id's
+            - data-with-services that send only services to API enpoint and get Pricelist only with that services id's
+            - data-with-description for change CMS setting of show or not the description
     "1.4.0":
         added:
             - New I18n method `this.trans(str)` and messages

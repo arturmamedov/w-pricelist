@@ -1,6 +1,6 @@
 {
   "name": "withapi-withpricelist",
-  "version": "1.3.0",
+  "version": "1.4.6",
   "description": "JS for work with Pricelist API for show it and search",
   "main": "js/withPricelist/main.js",
   "dependencies": {},
