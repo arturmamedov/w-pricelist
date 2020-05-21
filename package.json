@@ -1,7 +1,7 @@
 {
-  "name": "withapi-withpricelist",
+  "name": "w-pricelist",
   "version": "1.4.6",
-  "description": "JS for work with Pricelist API for show it and search",
+  "description": "JS API consumer of Pricelist for show it, search and send estimate email",
   "main": "js/withPricelist/main.js",
   "dependencies": {},
   "devDependencies": {
@@ -15,11 +15,13 @@
     "requirejs": "^2.3.6"
   },
   "scripts": {
+    "production": "r.js.cmd -o app.build.js",
+    "prod": "r.js.cmd -o app.build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://ambuonsito@bitbucket.org/teambuonsito/api-withpricelist.git"
+    "url": "git+https://github.com/arturmamedov/w-pricelist.git"
   },
   "keywords": [
     "pricelist",
@@ -27,5 +29,5 @@
   ],
   "author": "Artur Mamedov <arturmamedov1993@gmail.com>",
   "license": "0BSD",
-  "homepage": "https://bitbucket.org/teambuonsito/api-withpricelist#readme"
+  "homepage": "https://github.com/arturmamedov/w-pricelist"
 }

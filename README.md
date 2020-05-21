@@ -1,11 +1,6 @@
 # #withPricelist JS API v1.4.x
  
-Javascript module for work with Pricelists API
- 
-https://insuperadmin.buonsito.net/ 
-
-__Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
-
+Javascript module for work with Pricelist API
 
 ### Installation
 
@@ -30,7 +25,7 @@ __Author:__ Artur Mamedov <arturmamedov1993@gmail.com>
 `!important` AT THE END, AFTER AL OTHER JAVASCRIPT's cause require.js can duplicate some js
 
 ### Usage
-Before you start you need to create a pricelist and generate an access token on http://pricelist.buonsito.net/
+Before you start you need to create a pricelist and generate an access token on (..wip..)
 
 And after you can include this simple div on your page, where you want to show the pricelist
 ```
