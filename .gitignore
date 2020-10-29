@@ -1,6 +1,7 @@
 # Laravel 5 & Lumen specific
 vendor/
 node_modules/
+package-lock.json
 bootstrap/cache/
 Homestead.yaml
 Homestead.json

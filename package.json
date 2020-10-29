@@ -1,6 +1,6 @@
 {
   "name": "w-pricelist",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "JS API consumer of Pricelist for show it, search and send estimate email",
   "main": "js/withPricelist/main.js",
   "dependencies": {},
@@ -28,6 +28,6 @@
     "api"
   ],
   "author": "Artur Mamedov <arturmamedov1993@gmail.com>",
-  "license": "0BSD",
+  "license": "MIT",
   "homepage": "https://github.com/arturmamedov/w-pricelist"
 }
