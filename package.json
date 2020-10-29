@@ -3,7 +3,9 @@
   "version": "1.4.7",
   "description": "JS API consumer of Pricelist for show it, search and send estimate email",
   "main": "js/withPricelist/main.js",
-  "dependencies": {},
+  "dependencies": {
+    "requirejs": "^2.3.6"
+  },
   "devDependencies": {
     "grunt": "^1.0.3",
     "grunt-contrib-concat": "^1.0.1",
@@ -11,8 +13,7 @@
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-purifycss": "^0.1.2",
-    "requirejs": "^2.3.6"
+    "grunt-purifycss": "^0.1.2"
   },
   "scripts": {
     "install-bower": "cd js/withPricelist bower install",

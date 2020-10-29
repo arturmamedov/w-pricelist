@@ -15,7 +15,7 @@ Javascript module for work with Pricelist API
 1 - Include this js snippet on your page 
 
  ```
- <script src="js/withPricelist/bower_components/requirejs/require.js" 
+ <script src="node_modules/requirejs/require.js" 
  data-main="/js/withPricelist/withPricelist.min.js"></script>
  ```
  `src` is the main require.js file, change folder to your
@@ -172,7 +172,7 @@ r.js.cmd -o app.build.js
 For see debug information during development, include a main.js script and enable debug in non miniefied version
 
 ```html
-<script src="js/withPricelist/bower_components/requirejs/require.js" 
+<script src="node_modules/requirejs/require.js" 
 data-main="/js/withPricelist/main.js"></script>
 
 
