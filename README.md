@@ -4,15 +4,11 @@ Javascript module for work with Pricelist API
 
 ### Installation
 
-0 - Run `bower install` for install all components in
- `/js/withPricelist`
- 
 ```
-// it install
-// bootstrap, bootstrap-datepicker, handlebars, jquery, jquery-number, requirejs, text
+npm i withpricelist --save-prod
 ```
- 
-1 - Include this js snippet on your page 
+
+Include this js snippet on your page 
 
  ```
  <script src="node_modules/requirejs/require.js" 
@@ -156,17 +152,31 @@ For last edit the `master.layout` and instead of integrated `{{{ html.datepicker
 
 After if you wont to add other datepicker then the uxsolution/bootstrap-datepicker use the requirejs shim config, and work on initDatepicker() method.
 
+---
 
 ### Build
 You can rebuild Javascripts with RequireJS optimizer
 
+0 - Run `npm install` and after `npm run install-bower`
+ 
 ```
-// install it in root folder 
-npm install -g requirejs
+// npm install
+// requirejs + optimizer and grunt
 
-// and use requireJs optimizer for create js build 
-r.js.cmd -o app.build.js
+// npm run install-bower (work in js/withPricelist)
+// bootstrap, bootstrap-datepicker, handlebars, jquery, jquery-number, text
 ```
+
+1 - run for build `npm run prod` or `npm run dev` (verbose) 
+
+- it will run requirejs optimizer `r.js.cmd -o app.build.js` 
+    -  __[!!!]__ maybe you need also install globally requirejs `npm install -g requirejs` __[!!!]__ 
+
+- and grunt `see gruntFile.js`
+ 
+for build minimized assets
+
+---
 
 ### Debug 
 For see debug information during development, include a main.js script and enable debug in non miniefied version

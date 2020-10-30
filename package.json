@@ -1,6 +1,6 @@
 {
   "name": "withpricelist",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "JS API consumer of Pricelist for show it, search and send estimate email",
   "main": "js/withPricelist/main.js",
   "dependencies": {
@@ -16,7 +16,7 @@
     "grunt-purifycss": "^0.1.2"
   },
   "scripts": {
-    "install-bower": "cd js/withPricelist bower install",
+    "install-bower": "cd js/withPricelist && bower install",
     "dev": "npm run development",
     "development": "r.js.cmd -o app.build.js && grunt -v",
     "prod": "npm run production",
