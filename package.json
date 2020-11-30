@@ -1,6 +1,6 @@
 {
   "name": "withpricelist",
-  "version": "1.4.91",
+  "version": "1.5.0",
   "description": "JS API consumer of Pricelist for show it, search and send estimate email",
   "main": "js/withPricelist/main.js",
   "dependencies": {
