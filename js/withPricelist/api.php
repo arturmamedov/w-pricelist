@@ -116,6 +116,9 @@ class MyApi
         if (isset($options['lang'])) {
             $headers[] = "X-Lang: {$options['lang']}";
         }
+        if (isset($options['fallback_lang'])) {
+            $headers[] = "X-Lang-fallback: {$options['fallback_lang']}";
+        }
 
         // we wont JSON
         $headers[] = "Accept: application/json, text/javascript";

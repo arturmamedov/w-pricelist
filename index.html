@@ -13,7 +13,6 @@
 <body>
 
 <div class="container">
-
     <div class="row">
         <div class="">
             <div class="page-header">
@@ -45,13 +44,48 @@
 
     <div class="">
         <div class="page-header">
-            <h3>Esempio Pricelist intera</h3>
+            <h3>Esempio Pricelist intera senza ricerca</h3>
         </div>
 
         <div class="withPricelist" id="villaggio" data-with-slug="obiv"></div>
     </div>
+
+
+    <div class="">
+        <div class="page-header">
+            <h3>Esempio Pricelist senza ricerca con solo una riga</h3>
+        </div>
+
+        <div class="withPricelist"
+                id="villaggio"
+                data-with-slug="obiv"
+                data-with-services="1"
+        ></div>
+    </div>
+
+
+    <div class="">
+        <div class="page-header">
+            <h3>Esempio Pricelist senza ricerca con solo una riga e in lingua inglese forzata</h3>
+        </div>
+
+        <div class="withPricelist"
+                id="villaggio"
+                data-with-slug="obiv"
+                data-with-services="1"
+                data-with-lang="en"
+        ></div>
+    </div>
 </div>
 
-<script src="node_modules/requirejs/require.js" data-main="js/withPricelist/withPricelist.min.js"></script>
+<!-- CSS (not mandatory) -->
+<link rel="stylesheet" href="js/withPricelist/css/withPricelist.min.css">
+<!-- JS -->
+<script id="withPricelistScript"
+        src="node_modules/requirejs/require.js"
+        data-main="js/withPricelist/main.js"
+        data-fallback-lang="it">
+</script>
+
 </body>
 </html>

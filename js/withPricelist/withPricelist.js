@@ -69,6 +69,10 @@ define([
         } else {
             this.withData.lang = this.getLanguage();
         }
+        // set Fallback language of request if set
+        if (typeof $('#withPricelistScript').attr('data-fallback-lang') != "undefined") {
+            this.withData.fallback_lang = $('#withPricelistScript').attr('data-fallback-lang');
+        }
 
         // pricelist id
         if (typeof with_slug == "undefined" || with_slug.length == 0) {
