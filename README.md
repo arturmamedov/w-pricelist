@@ -1,4 +1,4 @@
-# #withPricelist JS API v1.4.x
+# #withPricelist JS API v1.5.x
  
 Javascript module for work with Pricelist API
 
