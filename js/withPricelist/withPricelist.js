@@ -64,7 +64,11 @@ define([
             with_check_out = this.pricelist.attr('data-checkout');
 
         // lang of request
-        this.withData.lang = this.getLanguage();
+        if (typeof this.pricelist.attr('data-with-lang') != "undefined") {
+            this.withData.lang = this.pricelist.attr('data-with-lang');
+        } else {
+            this.withData.lang = this.getLanguage();
+        }
 
         // pricelist id
         if (typeof with_slug == "undefined" || with_slug.length == 0) {
